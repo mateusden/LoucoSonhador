@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Produtos | Louco Sonhador</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/vendas.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo"><a href="../index.html">Louco Sonhador</a></h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="dashboard.html" class="seller">Dashboard</a></li>
+        <li><a href="produtos.html" class="seller">Produtos</a></li>
+        <li><a href="relatorios.html" class="seller">Relatórios</a></li>
+        <li><a href="ferramentas.html" class="seller">Ferramentas</a></li>
+        <li><a href="financeiro.html" class="seller">Financeiro</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="adicionar-produto">
+      <h2>Adicionar Novo Produto</h2>
+      <form id="form-produto" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Título" required>
+        <textarea name="description" placeholder="Descrição"></textarea>
+        <input type="number" name="price" placeholder="Preço" required>
+        <select name="category" required>
+          <option value="">Categoria</option>
+          <option value="brushes">Brushes</option>
+          <option value="texturas">Texturas</option>
+          <option value="fonts">Fonts</option>
+          <option value="templates">Templates</option>
+          <option value="mockups">Mockups</option>
+        </select>
+        <input type="text" name="tags" placeholder="Tags (separadas por vírgula)">
+        <input type="file" name="images" multiple accept="image/*" required>
+        <input type="file" name="files" multiple required>
+        <select name="license" required>
+          <option value="pessoal">Uso Pessoal</option>
+          <option value="comercial">Comercial</option>
+          <option value="estendida">Estendida</option>
+        </select>
+        <label><input type="checkbox" name="isFree"> Produto Gratuito</label>
+        <select name="status" required>
+          <option value="ativo">Ativo</option>
+          <option value="pausado">Pausado</option>
+          <option value="rascunho">Rascunho</option>
+        </select>
+        <input type="text" name="seoTitle" placeholder="SEO: Título">
+        <input type="text" name="seoDescription" placeholder="SEO: Descrição">
+        <button type="submit">Adicionar Produto</button>
+      </form>
+    </section>
+    <section id="produtos-existentes">
+      <h2>Produtos Existentes</h2>
+      <div id="lista-produtos"></div>
+    </section>
+  </main>
+  <script src="js/produtos.js"></script>
+</body>
+</html> 

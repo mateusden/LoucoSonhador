@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos | Louco Sonhador</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/section.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <h1 class="logo"><a href="./index.html">Louco Sonhador</a></h1>
+    <nav>
+      <ul class="menu">
+        <li><a class="home" href="./index.html">Home</a></li>
+        <li><a class="product" href="./colecoes.html">Produtos</a></li>
+        <li><a class="about" href="./sobre.html">Sobre</a></li>
+        <li><a class="download" href="./download.html">Downloads</a></li>
+        <li><a class="contact" href="./contato.html">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1 class="title-download">Produtos</h1>
+    <h2 class="subtitle-download">Ótimos produtos para enriquecer sua criatividade</h2>
+    <div class="search-and-filters">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Pesquisar produtos..." />
+        <button type="button" id="searchBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="filters-container">
+        <div class="category-selector">
+          <label for="category">Categoria:</label>
+          <select id="category" name="category">
+            <option value="todas">Todas</option>
+            <option value="wallpaper">Wallpaper</option>
+            <option value="paleta">Paleta</option>
+          </select>
+        </div>
+        
+        <div class="order-selector">
+          <label for="orderBy">Ordenar por:</label>
+          <select id="orderBy" name="orderBy">
+            <option value="name-asc">Nome (A-Z)</option>
+            <option value="name-desc">Nome (Z-A)</option>
+            <option value="price-asc">Preço (Menor)</option>
+            <option value="price-desc">Preço (Maior)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="free-products">
+      <div class="product-1" data-category="wallpaper">
+        <img class="product-img" src="./assets/img/Idem final.jpg" alt="">
+        <h2>Wallpaper Idem Ben 10</h2>
+        <h2>R$ 2,50</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=wallpaper-ben10-pago">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=wallpaper-ben10-pago">Ver detalhes</a></button>
+        </div>
+      </div>
+      <div class="product-1" data-category="paleta">
+        <img class="product-img" src="./assets/img/palette.png" alt="">
+        <h2>Paleta Idem Ben 10</h2>
+        <h2>R$ 1,00</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=paleta-ben10-paga">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=paleta-ben10-paga">Ver detalhes</a></button>
+        </div>
+      </div>
+      <div class="product-1" data-category="wallpaper">
+        <img class="product-img" src="./assets/img/Idem final.jpg" alt="">
+        <h2>Wallpaper Idem Ben 10 V2</h2>
+        <h2>R$ 3,00</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=wallpaper-ben10-v2-pago">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=wallpaper-ben10-v2-pago">Ver detalhes</a></button>
+        </div>
+      </div>
+      <div class="product-1" data-category="paleta">
+        <img class="product-img" src="./assets/img/palette.png" alt="">
+        <h2>Paleta Idem Ben 10 V2</h2>
+        <h2>R$ 1,50</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=paleta-ben10-v2-paga">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=paleta-ben10-v2-paga">Ver detalhes</a></button>
+        </div>
+      </div>
+      <div class="product-1" data-category="wallpaper">
+        <img class="product-img" src="./assets/img/Idem final.jpg" alt="">
+        <h2>Wallpaper Idem Ben 10 V3</h2>
+        <h2>R$ 2,00</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=wallpaper-ben10-v3-pago">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=wallpaper-ben10-v3-pago">Ver detalhes</a></button>
+        </div>
+      </div>
+      <div class="product-1" data-category="paleta">
+        <img class="product-img" src="./assets/img/palette.png" alt="">
+        <h2>Paleta Idem Ben 10 V3</h2>
+        <h2>R$ 2,00</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=paleta-ben10-v3-paga">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=paleta-ben10-v3-paga">Ver detalhes</a></button>
+        </div>
+      </div>
+      <div class="product-1" data-category="wallpaper">
+        <img class="product-img" src="./assets/img/Idem final.jpg" alt="">
+        <h2>Wallpaper Idem Ben 10 V4</h2>
+        <h2>R$ 2,00</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=wallpaper-ben10-v4-pago">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=wallpaper-ben10-v4-pago">Ver detalhes</a></button>
+        </div>
+      </div>
+      <div class="product-1" data-category="paleta">
+        <img class="product-img" src="./assets/img/palette.png" alt="">
+        <h2>Paleta Idem Ben 10 V4</h2>
+        <h2>R$ 2,00</h2>
+        <div class="product-actions">
+          <button><a class="download-preview" href="./compra.html?id=paleta-ben10-v4-paga">Comprar</a></button>
+          <button><a class="details" href="./detalhes.html?id=paleta-ben10-v4-paga">Ver detalhes</a></button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <span>© 2025 Louco Sonhador. Todos os direitos reservados.</span>
+      <span>
+        <a href="https://instagram.com/seuusuario" target="_blank">Instagram</a> |
+        <a href="./sobre.html">Sobre</a> |
+        <a href="./contato.html">Contato</a>
+      </span>
+      <span class="footer-creditos">
+        Site desenvolvido por <a href="https://github.com/1GuriBot" target="_blank">Mateus De Nadai</a>
+      </span>
+    </div>
+  </footer>
+  <script src="./js/main.js"></script>
+  <script src="./js/auth.js"></script>
+</body>
+
+</html>

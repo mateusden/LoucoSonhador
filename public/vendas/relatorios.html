@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendas e Relatórios | Louco Sonhador</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/vendas.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo"><a href="../index.html">Louco Sonhador</a></h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="dashboard.html" class="seller">Dashboard</a></li>
+        <li><a href="produtos.html" class="seller">Produtos</a></li>
+        <li><a href="relatorios.html" class="seller">Relatórios</a></li>
+        <li><a href="ferramentas.html" class="seller">Ferramentas</a></li>
+        <li><a href="financeiro.html" class="seller">Financeiro</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="historico-vendas">
+      <h2>Histórico de Vendas</h2>
+      <div id="filtros"></div>
+      <div id="lista-vendas"></div>
+    </section>
+    <section id="relatorio-produto">
+      <h2>Relatório por Produto</h2>
+      <div id="relatorio-produto-detalhe"></div>
+    </section>
+    <section id="estatisticas">
+      <h2>Estatísticas</h2>
+      <div id="estatisticas-dados"></div>
+      <canvas id="grafico-comparativo"></canvas>
+    </section>
+    <section id="exportar">
+      <h2>Exportar Dados</h2>
+      <button id="exportar-csv">Exportar CSV</button>
+      <button id="exportar-excel">Exportar Excel</button>
+    </section>
+  </main>
+  <script src="js/relatorios.js"></script>
+</body>
+</html> 

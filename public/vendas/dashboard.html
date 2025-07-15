@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard do Vendedor | Louco Sonhador</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/vendas.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo"><a href="../index.html">Louco Sonhador</a></h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="dashboard.html" class="seller">Dashboard</a></li>
+        <li><a href="produtos.html" class="seller">Produtos</a></li>
+        <li><a href="relatorios.html" class="seller">Relatórios</a></li>
+        <li><a href="ferramentas.html" class="seller">Ferramentas</a></li>
+        <li><a href="financeiro.html" class="seller">Financeiro</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="resumo-vendas">
+      <h2>Resumo de Vendas</h2>
+      <div id="metricas"></div>
+      <canvas id="grafico-vendas"></canvas>
+    </section>
+    <section id="produtos-destaque">
+      <h2>Produtos em Destaque</h2>
+      <div id="destaques"></div>
+    </section>
+    <section id="notificacoes">
+      <h2>Notificações</h2>
+      <ul id="lista-notificacoes"></ul>
+    </section>
+    <section id="saldo">
+      <h2>Saldo Disponível</h2>
+      <div id="saldo-disponivel"></div>
+    </section>
+  </main>
+  <script src="js/dashboard.js"></script>
+</body>
+</html> 

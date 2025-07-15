@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financeiro | Louco Sonhador</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/vendas.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo"><a href="../index.html">Louco Sonhador</a></h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="dashboard.html" class="seller">Dashboard</a></li>
+        <li><a href="produtos.html" class="seller">Produtos</a></li>
+        <li><a href="relatorios.html" class="seller">Relatórios</a></li>
+        <li><a href="ferramentas.html" class="seller">Ferramentas</a></li>
+        <li><a href="financeiro.html" class="seller">Financeiro</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="saldo-atual">
+      <h2>Saldo Atual</h2>
+      <div id="saldo-atual-dados"></div>
+    </section>
+    <section id="historico-pagamentos">
+      <h2>Histórico de Pagamentos</h2>
+      <div id="lista-pagamentos"></div>
+    </section>
+    <section id="solicitar-saque">
+      <h2>Solicitar Saque</h2>
+      <form id="form-saque">
+        <select name="metodo" required>
+          <option value="pix">PIX</option>
+          <option value="transferencia">Transferência</option>
+          <option value="paypal">PayPal</option>
+        </select>
+        <input type="number" name="valor" placeholder="Valor" required>
+        <button type="submit">Solicitar Saque</button>
+      </form>
+    </section>
+    <section id="dados-bancarios">
+      <h2>Configurar Dados Bancários</h2>
+      <form id="form-bancario">
+        <input type="text" name="pix" placeholder="Chave PIX">
+        <input type="text" name="bank" placeholder="Banco">
+        <input type="text" name="agency" placeholder="Agência">
+        <input type="text" name="account" placeholder="Conta">
+        <input type="text" name="paypal" placeholder="PayPal">
+        <button type="submit">Salvar Dados</button>
+      </form>
+    </section>
+    <section id="relatorio-impostos">
+      <h2>Relatório de Impostos e Recibos</h2>
+      <div id="relatorio-impostos-dados"></div>
+    </section>
+    <section id="percentual-plataforma">
+      <h2>Percentual da Plataforma</h2>
+      <div id="percentual-dados"></div>
+    </section>
+    <section id="previsao-pagamentos">
+      <h2>Previsão de Próximos Pagamentos</h2>
+      <div id="previsao-pagamentos-dados"></div>
+    </section>
+    <section id="alertas-saque">
+      <h2>Alertas de Saque</h2>
+      <div id="alertas-saque-dados"></div>
+    </section>
+  </main>
+  <script src="js/financeiro.js"></script>
+</body>
+</html> 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferramentas | Louco Sonhador</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/vendas.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo"><a href="../index.html">Louco Sonhador</a></h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="dashboard.html" class="seller">Dashboard</a></li>
+        <li><a href="produtos.html" class="seller">Produtos</a></li>
+        <li><a href="relatorios.html" class="seller">Relatórios</a></li>
+        <li><a href="ferramentas.html" class="seller">Ferramentas</a></li>
+        <li><a href="financeiro.html" class="seller">Financeiro</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="cupons">
+      <h2>Cupons de Desconto</h2>
+      <form id="form-cupom">
+        <input type="text" name="codigo" placeholder="Código do Cupom" required>
+        <input type="number" name="desconto" placeholder="% de Desconto" required>
+        <button type="submit">Criar Cupom</button>
+      </form>
+      <div id="lista-cupons"></div>
+    </section>
+    <section id="promocoes">
+      <h2>Promoções Sazonais</h2>
+      <div id="lista-promocoes"></div>
+    </section>
+    <section id="precificacao">
+      <h2>Precificação Sugerida</h2>
+      <div id="precificacao-sugerida"></div>
+    </section>
+    <section id="concorrencia">
+      <h2>Análise de Concorrência</h2>
+      <div id="analise-concorrencia"></div>
+    </section>
+    <section id="afiliados">
+      <h2>Links de Afiliados</h2>
+      <div id="links-afiliados"></div>
+    </section>
+    <section id="avaliacoes">
+      <h2>Avaliações e Comentários</h2>
+      <div id="lista-avaliacoes"></div>
+    </section>
+    <section id="notificacoes-push">
+      <h2>Notificações Push</h2>
+      <div id="notificacoes-push-lista"></div>
+    </section>
+    <section id="chat">
+      <h2>Chat com Compradores</h2>
+      <div id="chat-box"></div>
+    </section>
+  </main>
+  <script src="js/ferramentas.js"></script>
+</body>
+</html> 
