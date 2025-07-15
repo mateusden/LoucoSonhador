@@ -56,7 +56,6 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 ```
 louco-sonhador/
 ├── public/                 # Arquivos do frontend
-│   ├── index.html         # Página inicial
 │   ├── colecoes.html      # Catálogo de produtos pagos
 │   ├── download.html      # Produtos gratuitos
 │   ├── compra.html        # Página de pagamento
@@ -67,6 +66,7 @@ louco-sonhador/
 │   ├── css/               # Estilos
 │   ├── js/                # Scripts
 │   └── assets/            # Imagens e recursos
+├── index.html             # Página inicial
 ├── backend/               # API (em desenvolvimento)
 └── README.md             # Este arquivo
 ```
