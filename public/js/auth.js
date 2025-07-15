@@ -101,7 +101,7 @@ if (loginForm) {
     }
     
     setLoggedUser(user);
-    window.location.href = './index.html';
+    window.location.href = '../index.html';
   });
 }
 
@@ -171,7 +171,7 @@ function updateMenuUser() {
         text-align: right;
       `;
       
-      loginDiv.innerHTML = '<a href="./login.html" style="color: #63b3ed; text-decoration: none;">Login</a>';
+      loginDiv.innerHTML = '<a href="./public/login.html" style="color: #63b3ed; text-decoration: none;">Login</a>';
       
       header.style.position = 'relative';
       header.appendChild(loginDiv);
@@ -193,13 +193,13 @@ function addSellerNavLinks() {
     li.id = 'sellerMenuLinks';
     li.style.position = 'relative';
     li.innerHTML = `
-      <a href="vendas/dashboard.html" class="seller">Área do Vendedor</a>
+      <a href="./public/vendas/dashboard.html" class="seller">Área do Vendedor</a>
       <ul class="seller-submenu">
-        <li><a href="vendas/dashboard.html">Dashboard</a></li>
-        <li><a href="vendas/produtos.html">Produtos</a></li>
-        <li><a href="vendas/relatorios.html">Relatórios</a></li>
-        <li><a href="vendas/ferramentas.html">Ferramentas</a></li>
-        <li><a href="vendas/financeiro.html">Financeiro</a></li>
+        <li><a href="./public/vendas/dashboard.html">Dashboard</a></li>
+        <li><a href="./public/vendas/produtos.html">Produtos</a></li>
+        <li><a href="./public/vendas/relatorios.html">Relatórios</a></li>
+        <li><a href="./public/vendas/ferramentas.html">Ferramentas</a></li>
+        <li><a href="./public/vendas/financeiro.html">Financeiro</a></li>
       </ul>
     `;
     // Dropdown simples ao passar o mouse
