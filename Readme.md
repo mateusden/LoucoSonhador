@@ -71,25 +71,6 @@ louco-sonhador/
 └── README.md             # Este arquivo
 ```
 
-## 🚀 Como Executar Localmente
-
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/1GuriBot/LoucoSonhador.git
-   cd LoucoSonhador
-   ```
-
-2. **Abra o arquivo index.html** no seu navegador ou use um servidor local:
-   ```bash
-   # Usando Python
-   python -m http.server 8000
-   
-   # Usando Node.js
-   npx serve public
-   ```
-
-3. **Acesse:** `http://localhost:8000`
-
 ## 🌐 Deploy
 
 O site está hospedado no GitHub Pages:
@@ -110,14 +91,14 @@ O site está hospedado no GitHub Pages:
 
 - **Desenvolvedor:** Mateus De Nadai
 - **GitHub:** [@1GuriBot](https://github.com/1GuriBot)
-- **Instagram:** [@seuusuario](https://instagram.com/seuusuario)
+- **Instagram:** [@1nerdola38](https://instagram.com/1nerdola38)
 
 ## 📄 Licença
 
-Este projeto é de uso pessoal e educacional. Não está autorizado para uso comercial ou distribuição pública.
+Pode ser usada em projetos pessoais e comerciais, mas não pode revender a arte original
 
 ---
 
-**Última atualização:** Janeiro 2025
+**Última atualização:** Julho 2025
 
-**Versão:** 0.1.0 (Alpha)
+**Versão:** 0.1.2 (Alpha)
