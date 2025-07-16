@@ -136,20 +136,65 @@ function updateMenuUser() {
         flex-wrap: nowrap;
         white-space: nowrap;
         text-align: right;
+        z-index: 1000;
       `;
       
       const userName = user.name.split(' ')[0];
       const userType = user.type === 'vendedor' ? 'Vendedor' : 'Cliente';
       
+      let menuHtml = '';
+      if (user.type === 'cliente') {
+        menuHtml = `
+          <li><a href="./public/cliente.html#dashboard-cliente" class="user-menu-link" style="display:block;padding:0.75rem 1.5rem;color:#1a365d;text-decoration:none;font-weight:500;">Resumo</a></li>
+          <li><a href="./public/cliente.html#produtos" class="user-menu-link" style="display:block;padding:0.75rem 1.5rem;color:#1a365d;text-decoration:none;font-weight:500;">Produtos Comprados</a></li>
+          <li><a href="./public/cliente.html#conta" class="user-menu-link" style="display:block;padding:0.75rem 1.5rem;color:#1a365d;text-decoration:none;font-weight:500;">Informações da Conta</a></li>
+        `;
+      } else {
+        menuHtml = `
+          <li><a href="./public/cliente.html#conta" class="user-menu-link" style="display:block;padding:0.75rem 1.5rem;color:#1a365d;text-decoration:none;font-weight:500;">Informações da Conta</a></li>
+        `;
+      }
+      
+      function resolveImgPath(img) {
+        const isPublicPage = window.location.pathname.includes('/public/');
+        if (!img) return isPublicPage ? '../assets/img/image-svgrepo-com.png' : './assets/img/image-svgrepo-com.png';
+        if (img.startsWith('http')) return img;
+        if (img.startsWith('/')) return img;
+        if (img.startsWith('./') || img.startsWith('../')) return img;
+        return isPublicPage ? `../assets/img/${img}` : `./assets/img/${img}`;
+      }
+
       userDiv.innerHTML = `
-        <span>Olá, ${userName} (${userType})</span>
-        <span>|</span>
-        <a href="#" id="logoutBtn" style="color: #63b3ed; text-decoration: none; cursor: pointer;">Sair</a>
+        <div class="user-dropdown" style="position: relative; display: inline-block;">
+          <span id="userDropdownToggle" style="cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+            <img src="../assets/img/person-circle-svgrepo-com.png" alt="Perfil" style="width:28px;height:28px;vertical-align:middle;border-radius:50%;background:#fff;">
+            Olá, ${userName} <span style="font-size:14px;opacity:0.7;">(${userType})</span> <span style="font-size:14px;">▼</span>
+          </span>
+          <ul id="userDropdownMenu" style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:200px;z-index:1001;padding:0.5rem 0;list-style:none;margin:0;">
+            ${menuHtml}
+            <li><a href="#" id="logoutBtn" style="display:block;padding:0.75rem 1.5rem;color:#c53030;text-decoration:none;font-weight:500;">Sair</a></li>
+          </ul>
+        </div>
       `;
       
       header.style.position = 'relative';
       header.appendChild(userDiv);
       
+      // Dropdown toggle
+      const toggle = document.getElementById('userDropdownToggle');
+      const menu = document.getElementById('userDropdownMenu');
+      if (toggle && menu) {
+        toggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+        document.addEventListener('click', function(e) {
+          if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+            menu.style.display = 'none';
+          }
+        });
+      }
+      // Logout
       const logoutBtn = document.getElementById('logoutBtn');
       if (logoutBtn) {
         logoutBtn.onclick = function(e) { 

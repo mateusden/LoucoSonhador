@@ -20,7 +20,7 @@ const produtos = [
     nome: "Paleta Idem Ben 10 (Paga)",
     descricao: "Paleta de cores inspirada no universo Ben 10, perfeita para designers e fãs.",
     imagens: [
-      "assets/img/palette.png"
+      "../assets/img/palette.png"
     ],
     especificacoes: [
       "Formato: PNG",
@@ -41,7 +41,7 @@ const produtos = [
     nome: "Paleta Idem Ben 10 V2 (Paga)",
     descricao: "Paleta de cores inspirada no universo Ben 10, versão 2, perfeita para designers e fãs.",
     imagens: [
-      "assets/img/palette.png"
+      "../assets/img/palette.png"
     ],
     especificacoes: [
       "Formato: PNG",
@@ -62,7 +62,7 @@ const produtos = [
     nome: "Paleta Idem Ben 10 V3 (Paga)",
     descricao: "Paleta de cores inspirada no universo Ben 10, versão 3, perfeita para designers e fãs.",
     imagens: [
-      "assets/img/palette.png"
+      "../assets/img/palette.png"
     ],
     especificacoes: [
       "Formato: PNG",
@@ -83,7 +83,7 @@ const produtos = [
     nome: "Paleta Idem Ben 10 V4 (Paga)",
     descricao: "Paleta de cores inspirada no universo Ben 10, versão 4, perfeita para designers e fãs.",
     imagens: [
-      "assets/img/palette.png"
+      "../assets/img/palette.png"
     ],
     especificacoes: [
       "Formato: PNG",
@@ -104,7 +104,7 @@ const produtos = [
     nome: "Wallpaper Idem Ben 10 (Pago)",
     descricao: "Wallpaper exclusivo inspirado no universo Ben 10, em alta resolução para desktop ou mobile.",
     imagens: [
-      "assets/img/Idem final.jpg"
+      "../assets/img/Idem final.jpg"
     ],
     especificacoes: [
       "Formato: JPG",
@@ -125,7 +125,7 @@ const produtos = [
     nome: "Wallpaper Idem Ben 10 V2 (Pago)",
     descricao: "Wallpaper exclusivo inspirado no universo Ben 10, versão 2, em alta resolução para desktop ou mobile.",
     imagens: [
-      "assets/img/Idem final.jpg"
+      "../assets/img/Idem final.jpg"
     ],
     especificacoes: [
       "Formato: JPG",
@@ -146,7 +146,7 @@ const produtos = [
     nome: "Wallpaper Idem Ben 10 V3 (Pago)",
     descricao: "Wallpaper exclusivo inspirado no universo Ben 10, versão 3, em alta resolução para desktop ou mobile.",
     imagens: [
-      "assets/img/Idem final.jpg"
+      "../assets/img/Idem final.jpg"
     ],
     especificacoes: [
       "Formato: JPG",
@@ -167,7 +167,7 @@ const produtos = [
     nome: "Wallpaper Idem Ben 10 V4 (Pago)",
     descricao: "Wallpaper exclusivo inspirado no universo Ben 10, versão 4, em alta resolução para desktop ou mobile.",
     imagens: [
-      "assets/img/Idem final.jpg"
+      "../assets/img/Idem final.jpg"
     ],
     especificacoes: [
       "Formato: JPG",
@@ -188,7 +188,7 @@ const produtos = [
     nome: "Paleta Idem Ben 10 (Grátis)",
     descricao: "Paleta de cores inspirada no universo Ben 10, perfeita para designers e fãs. Versão gratuita!",
     imagens: [
-      "assets/img/palette.png"
+      "../assets/img/palette.png"
     ],
     especificacoes: [
       "Formato: PNG",
@@ -209,7 +209,7 @@ const produtos = [
     nome: "Wallpaper Idem Ben 10 (Grátis)",
     descricao: "Wallpaper exclusivo inspirado no universo Ben 10, em alta resolução para desktop ou mobile. Versão gratuita!",
     imagens: [
-      "assets/img/Idem Final.jpg"
+      "../assets/img/Idem Final.jpg"
     ],
     especificacoes: [
       "Formato: JPG",
@@ -244,12 +244,24 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
+  // Definir caminho da imagem principal pelo id
+  let imgPath = '';
+  if (produto.id.startsWith('wallpaper')) {
+    imgPath = '../assets/img/' + produto.id + '.jpg';
+  } else if (produto.id.startsWith('paleta')) {
+    imgPath = '../assets/img/' + produto.id + '.png';
+  }
+
   document.getElementById('detalhe-produto').innerHTML = `
     <div class="detalhe-container">
       <nav class="detalhe-breadcrumb">${produto.pago ? `Produtos &gt; ${produto.nome}` : `Downloads &gt; ${produto.nome}`}</nav>
       <div class="detalhe-conteudo">
-        <div class="detalhe-img" style="padding-left: 48px;">
-          <img id="img-grande" src="${produto.imagens[0]}" alt="${produto.nome}">
+        <div class="detalhe-img" style="padding-left: 48px; display: flex; flex-direction: column; align-items: center;">
+          <img id="img-grande" src="${imgPath}" alt="${produto.nome}">
+          <div style="width:100%;max-width:320px;display:flex;flex-direction:column;align-items:center;margin-top:16px;">
+            <button id="btn-add-wishlist" style="width:100%;margin-bottom:10px;padding:12px 0;background:#1a365d;color:#fff;font-size:1.1rem;border:none;border-radius:8px;cursor:pointer;">Adicionar à sua Lista de Desejos</button>
+            <button id="btn-add-cart" style="width:100%;padding:12px 0;background:#63b3ed;color:#1a365d;font-size:1.1rem;border:none;border-radius:8px;cursor:pointer;">Adicionar ao seu carrinho</button>
+          </div>
         </div>
         <div class="detalhe-info">
           <h2>${produto.nome}</h2>
@@ -280,5 +292,52 @@ document.addEventListener('DOMContentLoaded', function() {
       const id = params.get('id');
       window.location.href = `compra.html?id=${id}`;
     });
+  }
+
+  // Função para verificar login
+  function isLogged() {
+    return !!localStorage.getItem('ls_logged_user');
+  }
+
+  // Função para adicionar produto ao localStorage
+  function addToStorage(key, produto) {
+    let lista = JSON.parse(localStorage.getItem(key) || '[]');
+    // Evita duplicidade pelo id
+    if (!lista.some(p => p.id === produto.id)) {
+      let imgName = '';
+      if (produto.id.startsWith('wallpaper')) {
+        imgName = produto.id + '.jpg';
+      } else if (produto.id.startsWith('paleta')) {
+        imgName = produto.id + '.png';
+      }
+      lista.push({ id: produto.id, nome: produto.nome, img: imgName });
+      localStorage.setItem(key, JSON.stringify(lista));
+    }
+  }
+
+  // Botão Wishlist
+  const btnWishlist = document.getElementById('btn-add-wishlist');
+  if (btnWishlist) {
+    btnWishlist.onclick = function() {
+      if (!isLogged()) {
+        window.location.href = './login.html';
+        return;
+      }
+      addToStorage('ls_wishlist', produto);
+      alert('Produto adicionado à sua Lista de Desejos!');
+    };
+  }
+
+  // Botão Carrinho
+  const btnCart = document.getElementById('btn-add-cart');
+  if (btnCart) {
+    btnCart.onclick = function() {
+      if (!isLogged()) {
+        window.location.href = './login.html';
+        return;
+      }
+      addToStorage('ls_cart', produto);
+      alert('Produto adicionado ao seu carrinho!');
+    };
   }
 }); 

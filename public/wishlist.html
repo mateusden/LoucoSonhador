@@ -1,19 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detalhes | Louco Sonhador</title>
-  <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/section.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
-    rel="stylesheet">
+  <title>Minha Wishlist | Louco Sonhador</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
   <header>
     <h1 class="logo"><a href="../index.html">Louco Sonhador</a></h1>
@@ -26,10 +18,7 @@
         <li><a class="tutorial" href="./tutorial-wallpaper.html">Como usar</a></li>
         <li><a class="contact" href="./contato.html">Contato</a></li>
         <li class="nav-wishlist nav-dropdown-hover" style="position:relative;">
-          <a href="./wishlist.html" id="wishlistNavLink"
-            style="text-decoration:none;color:#63b3ed; font-size: 20px;">
-            Wishlist <span id="wishlistCount" style="font-weight:bold;">0</span>
-          </a>
+          <a href="./wishlist.html" id="wishlistNavLink">Wishlist <span id="wishlistCount" style="font-weight:bold;">0</span></a>
           <div id="wishlistDropdown" class="nav-dropdown"
             style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
             <div id="wishlistPreview"></div>
@@ -39,10 +28,7 @@
           </div>
         </li>
         <li class="nav-cart nav-dropdown-hover" style="position:relative;">
-          <a href="./carrinho.html" id="cartNavLink"
-            style="text-decoration:none;color:#63b3ed; font-size: 20px;">
-            Carrinho <span id="cartCount" style="font-weight:bold;">0</span>
-          </a>
+          <a href="./carrinho.html" id="cartNavLink">Carrinho <span id="cartCount" style="font-weight:bold;">0</span></a>
           <div id="cartDropdown" class="nav-dropdown"
             style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
             <div id="cartPreview"></div>
@@ -51,10 +37,12 @@
               Carrinho Completo</a>
           </div>
         </li>
-      </ul>
     </nav>
   </header>
-  <main id="detalhe-produto"></main>
+  <main>
+    <h1 style="text-align:center;font-size:2.8rem;color:#1a365d;font-family:'Source Sans 3', sans-serif;font-weight:700;margin-top:32px;margin-bottom:32px;">Minha Wishlist</h1>
+    <div id="wishlistItens" style="font-family:'Source Sans 3',sans-serif;color:#1a365d;"></div>
+  </main>
   <footer>
     <div class="footer-content">
       <span>© 2025 Louco Sonhador. Todos os direitos reservados.</span>
@@ -68,9 +56,8 @@
       </span>
     </div>
   </footer>
-  <script src="./js/detalhes.js"></script>
   <script src="./js/main.js"></script>
   <script src="./js/auth.js"></script>
+  <script src="js/wishlist.js"></script>
 </body>
-
-</html>
+</html> 

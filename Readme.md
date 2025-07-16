@@ -55,20 +55,70 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 
 ```
 louco-sonhador/
-├── public/                 # Arquivos do frontend
-│   ├── colecoes.html      # Catálogo de produtos pagos
-│   ├── download.html      # Produtos gratuitos
-│   ├── compra.html        # Página de pagamento
-│   ├── detalhes.html      # Detalhes dos produtos
-│   ├── sobre.html         # Sobre o projeto
-│   ├── contato.html       # Página de contato
-│   ├── login.html         # Sistema de login
-│   ├── css/               # Estilos
-│   ├── js/                # Scripts
-│   └── assets/            # Imagens e recursos
-├── index.html             # Página inicial
-├── backend/               # API (em desenvolvimento)
-└── README.md             # Este arquivo
+├── assets/                      # Imagens e ícones
+│   └── img/                     # Imagens diversas do projeto
+├── backend/                     # API e backend (em desenvolvimento)
+│   ├── app.js                   # Arquivo principal do backend
+│   ├── database/
+│   │   └── connection.js        # Conexão com banco de dados
+│   ├── middleware/              # Middlewares (vazio)
+│   ├── models/                  # Modelos do banco de dados
+│   │   ├── Payment.js
+│   │   ├── Product.js
+│   │   ├── Sale.js
+│   │   └── User.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public/
+│   │   ├── css/
+│   │   └── js/
+│   └── routes/                  # Rotas da API (vazio)
+├── index.html                   # Página inicial
+├── public/                      # Arquivos do frontend
+│   ├── carrinho.html            # Carrinho de compras
+│   ├── cliente/                 # Área do cliente
+│   │   ├── css/
+│   │   │   └── cliente.css
+│   │   └── js/
+│   │       └── cliente.js
+│   ├── cliente.html             # Página do cliente
+│   ├── colecoes.html            # Catálogo de produtos pagos
+│   ├── compra.html              # Página de pagamento
+│   ├── contato.html             # Página de contato
+│   ├── css/
+│   │   ├── section.css
+│   │   └── style.css
+│   ├── detalhes.html            # Detalhes dos produtos
+│   ├── download.html            # Produtos gratuitos
+│   ├── fonts/
+│   │   └── crilo-demo.otf
+│   ├── js/
+│   │   ├── auth.js
+│   │   ├── carrinho.js
+│   │   ├── compra.js
+│   │   ├── detalhes.js
+│   │   ├── main.js
+│   │   └── wishlist.js
+│   ├── login.html               # Sistema de login
+│   ├── registro.html            # Cadastro de usuário
+│   ├── sobre.html               # Sobre o projeto
+│   ├── tutorial-wallpaper.html  # Tutorial de uso
+│   ├── vendas/                  # Área administrativa
+│   │   ├── css/
+│   │   │   └── vendas.css
+│   │   ├── dashboard.html
+│   │   ├── ferramentas.html
+│   │   ├── financeiro.html
+│   │   ├── js/
+│   │   │   ├── dashboard.js
+│   │   │   ├── ferramentas.js
+│   │   │   ├── financeiro.js
+│   │   │   ├── produtos.js
+│   │   │   └── relatorios.js
+│   │   ├── produtos.html
+│   │   └── relatorios.html
+│   └── wishlist.html            # Lista de desejos
+├── Readme.md                    # Este arquivo
 ```
 
 ## 🌐 Deploy
