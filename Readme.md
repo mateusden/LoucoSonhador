@@ -23,33 +23,27 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 - [x] Catálogo de produtos (coleções e downloads)
 - [x] Sistema de autenticação básico
 - [x] Páginas de detalhes dos produtos
-- [x] Sistema de pagamento via PIX
-- [x] Integração com chat (Tawk.to)
 - [x] Design responsivo para mobile
+- [x] Banco de dados de usuários
+- [x] Sistema de downloads automático
 
 ### 🔄 Em Desenvolvimento
 - [ ] Sistema de backend completo
-- [ ] Banco de dados de usuários
 - [ ] Sistema de pagamentos seguro
-- [ ] Área administrativa
-- [ ] Sistema de downloads automático
 - [ ] Validações de segurança
+- [ ] Área do cliente
 
 ### ❌ Não Implementado
-- [ ] Sistema de estoque
-- [ ] Relatórios de vendas
 - [ ] Sistema de cupons
-- [ ] Área do cliente
 - [ ] Sistema de avaliações
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-- **Backend:** Node.js (em desenvolvimento)
-- **Banco de Dados:** MongoDB (planejado)
-- **Chat:** Tawk.to
-- **Pagamentos:** PIX (manual)
-- **Deploy:** GitHub Pages
+- **Backend:** Node.js
+- **Banco de Dados:** MySQL e Insomnia
+- **Pagamentos:** Hotmart
+- **Deploy:** Render e PlanetScale
 
 ## 📁 Estrutura do Projeto
 
@@ -62,17 +56,25 @@ louco-sonhador/
 │   ├── database/
 │   │   └── connection.js        # Conexão com banco de dados
 │   ├── middleware/              # Middlewares (vazio)
+│   │   ├── auth.js
 │   ├── models/                  # Modelos do banco de dados
 │   │   ├── Payment.js
 │   │   ├── Product.js
 │   │   ├── Sale.js
 │   │   └── User.js
 │   ├── package.json
+│   ├── node_modules/
 │   ├── package-lock.json
 │   ├── public/
 │   │   ├── css/
+│   │   ├── downloads/
 │   │   └── js/
 │   └── routes/                  # Rotas da API (vazio)
+│   │   ├── carrinho.js
+│   │   ├── downloads.js
+│   │   ├── product.js
+│   │   ├── users.js
+│   │   ├── wishlist.js
 ├── index.html                   # Página inicial
 ├── public/                      # Arquivos do frontend
 │   ├── carrinho.html            # Carrinho de compras
@@ -117,25 +119,25 @@ louco-sonhador/
 │   │   │   └── relatorios.js
 │   │   ├── produtos.html
 │   │   └── relatorios.html
+│   └── privacidade.js 
+│   └── termos.html
 │   └── wishlist.html            # Lista de desejos
 ├── Readme.md                    # Este arquivo
 ```
 
 ## 🌐 Deploy
 
-O site está hospedado no GitHub Pages:
-- **URL:** https://1guribot.github.io/LoucoSonhador/
-- **Branch:** main
-- **Pasta:** public
+O site está hospedado no :
+- **URL:** 
 
 ## 🔒 Segurança
 
 ⚠️ **ATENÇÃO:** Este projeto não possui implementações de segurança adequadas para produção:
 
-- Autenticação básica (localStorage)
+- Autenticação média (MySQL)
 - Sem HTTPS em desenvolvimento
 - Sem validações robustas
-- Sistema de pagamentos manual
+- Sistema de pagamentos automatizado
 
 ## 📞 Contato
 
@@ -149,6 +151,6 @@ Pode ser usada em projetos pessoais e comerciais, mas não pode revender a arte 
 
 ---
 
-**Última atualização:** Julho 2025
+**Última atualização:** 24 Julho 2025
 
-**Versão:** 0.1.2 (Alpha)
+**Versão:** 0.8 (Beta)
