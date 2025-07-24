@@ -1,16 +1,10 @@
-const mongoose = require('mongoose');
+const mysql = require('mysql2/promise');
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/loucosonhador', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB conectado');
-  } catch (err) {
-    console.error('Erro ao conectar ao MongoDB:', err.message);
-    process.exit(1);
-  }
-};
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'root',      // troque pelo seu usuário do MySQL
+  password: 'pacoquita',    // troque pela sua senha do MySQL
+  database: 'louco_sonhador'
+});
 
-module.exports = connectDB; 
+module.exports = pool;

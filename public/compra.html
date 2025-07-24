@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/section.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <link
         href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
@@ -40,30 +41,30 @@
                 <li><a class="contact" href="./contato.html">Contato</a></li>
                 <li class="nav-wishlist nav-dropdown-hover" style="position:relative;">
                     <a href="./wishlist.html" id="wishlistNavLink"
-                      style="text-decoration:none;color:#63b3ed; font-size: 20px;">
-                      Wishlist <span id="wishlistCount" style="font-weight:bold;">0</span>
+                        style="text-decoration:none;color:#63b3ed; font-size: 20px;">
+                        Wishlist <span id="wishlistCount" style="font-weight:bold;">0</span>
                     </a>
                     <div id="wishlistDropdown" class="nav-dropdown"
-                      style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
-                      <div id="wishlistPreview"></div>
-                      <a href="./wishlist.html"
-                        style="display:block;padding:0.75rem 1.5rem;text-align:center;color:#1a365d;font-weight:600;text-decoration:none;">Ver
-                        Wishlist Completa</a>
+                        style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
+                        <div id="wishlistPreview"></div>
+                        <a href="./wishlist.html"
+                            style="display:block;padding:0.75rem 1.5rem;text-align:center;color:#1a365d;font-weight:600;text-decoration:none;">Ver
+                            Wishlist Completa</a>
                     </div>
-                  </li>
-                  <li class="nav-cart nav-dropdown-hover" style="position:relative;">
+                </li>
+                <li class="nav-cart nav-dropdown-hover" style="position:relative;">
                     <a href="./carrinho.html" id="cartNavLink"
-                      style="text-decoration:none;color:#63b3ed; font-size: 20px;">
-                      Carrinho <span id="cartCount" style="font-weight:bold;">0</span>
+                        style="text-decoration:none;color:#63b3ed; font-size: 20px;">
+                        Carrinho <span id="cartCount" style="font-weight:bold;">0</span>
                     </a>
                     <div id="cartDropdown" class="nav-dropdown"
-                      style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
-                      <div id="cartPreview"></div>
-                      <a href="./carrinho.html"
-                        style="display:block;padding:0.75rem 1.5rem;text-align:center;color:#1a365d;font-weight:600;text-decoration:none;">Ver
-                        Carrinho Completo</a>
+                        style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
+                        <div id="cartPreview"></div>
+                        <a href="./carrinho.html"
+                            style="display:block;padding:0.75rem 1.5rem;text-align:center;color:#1a365d;font-weight:600;text-decoration:none;">Ver
+                            Carrinho Completo</a>
                     </div>
-                  </li>
+                </li>
             </ul>
         </nav>
     </header>
@@ -83,9 +84,9 @@
                     <h3>📋 Como comprar:</h3>
                     <ol>
                         <li>Pague o valor do produto via PIX</li>
-                        <li>Clique no botão na parte inferior do site para abrir o chat</li>
-                        <li>Responda as perguntas e te enviarei o link do download</li>
-                        <li>Baixe a partir do meu link</li>
+                        <li>Clique no botão ou escaneie o qr-code na parte inferior do site para abrir o formulário</li>
+                        <li>Responda as perguntas e mande o comprovante, ou print e envie </li>
+                        <li>Chegará um e-mail para você baixar seu produto comprado</li>
                     </ol>
                     <p><strong>Receba em até 5 minutos após a confirmação do pagamento!</strong></p>
                     <p><strong>Licença: </strong>Pode ser usada em projetos pessoais e comerciais, mas não pode revender
@@ -93,8 +94,11 @@
                 </div>
             </div>
         </div>
-        <button class="product-button" onclick="Tawk_API.maximize()"><a class="product-a"
-                href="javascript:void(0)">Clique para abrir o chat</a></button>
+        <div class="form" style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin: 40px auto; text-align: center; max-width: 500px;">
+            <button class="product-button" style="margin-bottom: 20px;"><a href="https://tally.so/r/wo8zkb" class="product-a" target="_blank">Clique para abrir o formulário</a></button>
+            <h3 style="margin-bottom: 15px; font-family: 'Source Sans 3'; color: #1a365d;">Ou pelo Qr-code</h3>
+            <img src="../assets/img/qrtally.png" alt="QR Code do formulário" style="max-width: 200px; height: auto;">
+        </div>
     </main>
     <footer>
         <div class="footer-content">
@@ -102,7 +106,9 @@
             <span>
                 <a href="https://instagram.com/1nerdola38" target="_blank">Instagram</a> |
                 <a href="./sobre.html">Sobre</a> |
-                <a href="./contato.html">Contato</a>
+                <a href="./contato.html">Contato</a> |
+                <a href="./privacidade.html">Política de Privacidade</a> |
+                <a href="./termos.html">Termos de Uso</a>
             </span>
             <span class="footer-creditos">
                 Site desenvolvido por <a href="https://github.com/1GuriBot" target="_blank">Mateus De Nadai</a>
@@ -112,19 +118,6 @@
     <script src="./js/main.js"></script>
     <script src="./js/auth.js"></script>
     <script src="./js/compra.js"></script>
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-        (function () {
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/6875a871b00c4c190e1c99c1/1j05pjvcb';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
-    </script>
-    <!--End of Tawk.to Script-->
 </body>
 
 </html>

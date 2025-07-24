@@ -201,6 +201,45 @@ section {
     background-color: #faf5f0;
 }
 
+.privacidade {
+    background: #faf5f0;
+    border-radius: 12px;
+    padding: 28px;
+    margin: 32px auto;
+    max-width: 600px;
+    color: #2d3748;
+    font-family: 'Source Sans 3';
+    font-size: 20px;
+}
+
+.privacidade h1 {
+    text-align: center;
+    font-size: 55px;
+    margin-bottom: 45px;
+    font-weight: 650;
+}
+
+.privacidade h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.privacidade h3 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.privacidade h4 {
+    text-align: center;
+    font-size: 23px;
+    margin-bottom: 18px;
+    font-weight: 550;
+}
+
 .free-products {
     display: flex;
     gap: 50px;

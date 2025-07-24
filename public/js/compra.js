@@ -1,18 +1,38 @@
 // Verificação de login antes de permitir acesso à página de compra
-function verificarLogin() {
-  const loggedUser = localStorage.getItem('ls_logged_user');
-  
-  if (!loggedUser) {
-    // Se não estiver logado, redireciona para login
-    window.location.href = './login.html';
+async function verificarLogin() {
+  try {
+    const response = await fetch('http://192.168.0.89:3001/api/users/check-auth', {
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      return true; // Usuário autenticado
+    } else {
+      // Se não estiver logado, redireciona para login
+      window.location.href = './login.html';
+      return false;
+    }
+  } catch (error) {
+    console.error('Erro ao verificar login:', error);
+    // Em caso de erro de conexão, não redireciona automaticamente
+    // Permite que o usuário veja a página mas com aviso
     return false;
   }
-  return true;
 }
 
 // Executa verificação quando a página carrega
-document.addEventListener('DOMContentLoaded', function() {
-  if (!verificarLogin()) {
+document.addEventListener('DOMContentLoaded', async function() {
+  const isLoggedIn = await verificarLogin();
+  
+  if (!isLoggedIn) {
+    // Adiciona aviso visual em vez de redirecionar automaticamente
+    const main = document.querySelector('main');
+    if (main) {
+      const aviso = document.createElement('div');
+      aviso.style.cssText = 'background:#fef5e7;border:1px solid #f6ad55;padding:1rem;margin:1rem;border-radius:8px;text-align:center;';
+      aviso.innerHTML = '<p style="margin:0;color:#c05621;">⚠️ Você precisa estar logado para finalizar a compra. <a href="./login.html" style="color:#1a365d;font-weight:600;">Fazer Login</a></p>';
+      main.insertBefore(aviso, main.firstChild);
+    }
     return; // Para a execução se não estiver logado
   }
 

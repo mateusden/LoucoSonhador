@@ -20,11 +20,15 @@ main {
     padding: 2rem;
     border-radius: 12px;
     box-shadow: -2px 9px 14px 6px rgba(200, 184, 168, 0.97);
+    margin-bottom: 70px;
 }
 
-h1, h2 {
+h1 {
     color: #1a365d;
+    font-size: 32px;
+
     font-family: 'Source Sans 3', sans-serif;
+    text-align: center;
 }
 
 section {
@@ -71,4 +75,250 @@ section {
 }
 .submenu-link:hover {
     background: #e0d0b5;
+}
+/* Estilo para informações da conta - versão maior e mais parecida com o site */
+.conta-info-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 56px;
+  margin: 48px auto 0 auto;
+  background: #fff7ef;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(26,54,93,0.13);
+  padding: 48px 64px;
+  max-width: 800px;
+  min-width: 400px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+.conta-foto {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 24px rgba(26,54,93,0.15);
+  border: 5px solid #efdac5;
+  background: #fff;
+}
+.conta-dados {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 320px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  align-items: flex-start;
+}
+.conta-nome {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a365d;
+  margin-bottom: 10px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  letter-spacing: 0.5px;
+}
+.conta-email {
+  font-size: 1.3rem;
+  color: #444;
+  margin-bottom: 24px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+.conta-senha-container {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  background: #efdac5;
+  border-radius: 10px;
+  padding: 12px 18px;
+  box-shadow: 0 3px 12px rgba(200, 184, 168, 0.13);
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+#senhaInput {
+  font-size: 1.3rem;
+  padding: 6px 18px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  margin-left: 12px;
+  width: 220px;
+  letter-spacing: 2px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+#toggleSenha {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 2px 14px;
+  margin-left: 10px;
+  color: #1a365d;
+  transition: color 0.2s;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+#toggleSenha:hover {
+  color: #63b3ed;
+}
+.cliente-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.cliente-nav ul {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.cliente-nav a {
+  text-decoration: none;
+  color: #1a365d;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  background: #efdac5;
+  box-shadow: 0 2px 8px rgba(200, 184, 168, 0.10);
+}
+.cliente-nav a:hover, .cliente-nav a:focus {
+  background: #63b3ed;
+  color: #fff;
+}
+@media (max-width: 700px) {
+  .cliente-nav ul {
+    gap: 10px;
+  }
+  .cliente-nav a {
+    font-size: 1rem;
+    padding: 8px 10px;
+  }
+}
+@media (max-width: 900px) {
+  .conta-info-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 8px;
+    gap: 28px;
+    min-width: unset;
+    max-width: 98vw;
+  }
+  .conta-dados {
+    min-width: unset;
+    width: 100%;
+    align-items: center;
+  }
+  #senhaInput {
+    width: 100%;
+    min-width: 0;
+  }
+} 
+.btn-editar-conta {
+  display: block;
+  margin: 24px auto 0 auto;
+  background: #63b3ed;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-size: 1.1rem;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,54,93,0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-editar-conta:hover, .btn-editar-conta:focus {
+  background: #1a365d;
+  color: #efdac5;
+  box-shadow: 0 4px 16px rgba(26,54,93,0.13);
+} 
+.form-editar-conta {
+  max-width: 480px;
+  margin: 0 auto;
+  background: #fff7ef;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(26,54,93,0.10);
+  padding: 32px 28px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.form-row label {
+  font-weight: 600;
+  color: #1a365d;
+  margin-bottom: 2px;
+}
+.form-row input[type="text"],
+.form-row input[type="password"],
+.form-row input[type="date"],
+.form-row select {
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+.form-row input[type="file"] {
+  font-size: 1rem;
+  margin-top: 2px;
+  border: none;
+  background: #63b3ed;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,54,93,0.10);
+  transition: background 0.2s, color 0.2s;
+}
+.form-row input[type="file"]::-webkit-file-upload-button {
+  background: #63b3ed;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.form-row input[type="file"]:hover::-webkit-file-upload-button {
+  background: #1a365d;
+  color: #efdac5;
+}
+.form-row input[type="file"]:focus::-webkit-file-upload-button {
+  outline: 2px solid #63b3ed;
+}
+.conta-extra-info {
+  margin-top: 18px;
+  font-size: 1.08rem;
+  color: #1a365d;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  display: none;
+}
+.conta-extra-info.mostrar {
+  display: block;
+}
+.form-row img.conta-foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #efdac5;
+  margin-top: 8px;
+}
+.form-botoes {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 18px;
 } 
