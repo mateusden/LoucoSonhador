@@ -52,7 +52,6 @@ louco-sonhador/
 ├── assets/                      # Imagens e ícones
 │   └── img/                     # Imagens diversas do projeto
 ├── backend/                     # API e backend (em desenvolvimento)
-│   ├── app.js                   # Arquivo principal do backend
 │   ├── database/
 │   │   └── connection.js        # Conexão com banco de dados
 │   ├── middleware/              # Middlewares (vazio)
@@ -62,9 +61,7 @@ louco-sonhador/
 │   │   ├── Product.js
 │   │   ├── Sale.js
 │   │   └── User.js
-│   ├── package.json
 │   ├── node_modules/
-│   ├── package-lock.json
 │   ├── public/
 │   │   ├── css/
 │   │   ├── downloads/
@@ -75,7 +72,10 @@ louco-sonhador/
 │   │   ├── product.js
 │   │   ├── users.js
 │   │   ├── wishlist.js
+├── package.json
+├── package-lock.json
 ├── index.html                   # Página inicial
+├── app.js                   # Arquivo principal do backend
 ├── public/                      # Arquivos do frontend
 │   ├── carrinho.html            # Carrinho de compras
 │   ├── cliente/                 # Área do cliente
