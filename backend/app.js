@@ -2,9 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
-const carrinhoRoutes = require('./routes/carrinho');
-const wishlistRoutes = require('./routes/wishlist');
-const produtosRoutes = require('./routes/products');
+const carrinhoRoutes = require('./backend/routes/carrinho');
+const wishlistRoutes = require('./backend/routes/wishlist');
+const produtosRoutes = require('./backend/routes/products');
 
 // Servir arquivos estáticos da pasta public
 app.use(express.static(__dirname + '/../public'));
@@ -24,7 +24,8 @@ app.use(cors({
     'http://192.168.0.89',
     'http://192.168.0.62',
     'http://localhost',
-    'http://127.0.0.1'
+    'http://127.0.0.1',
+    'https://loucosonhador.onrender.com/'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -39,8 +40,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/produtos', produtosRoutes);
-app.use('/api/users', require('./routes/users'));
-app.use('/api/downloads', require('./routes/downloads'));
+app.use('/api/users', require('./backend/routes/users'));
+app.use('/api/downloads', require('./backend/routes/downloads'));
 app.use('/downloads', express.static(__dirname + '/public/downloads'));
 app.use('/api/carrinho', carrinhoRoutes);
 app.use('/api/wishlist', wishlistRoutes);
