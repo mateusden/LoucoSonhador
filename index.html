@@ -1,133 +1,239 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Louco Sonhador</title>
+    <link rel="stylesheet" href="./public/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="./assets/img/favicon.ico" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Louco Sonhador</title>
-  <link rel="stylesheet" href="./public/css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
-    rel="stylesheet">
-  <link rel="icon" type="image/png" href="./assets/img/favicon.ico">
-</head>
-
-<body>
-  <header>
-    <h1 class="logo"><a href="./index.html">Louco Sonhador</a></h1>
-    <nav>
-      <ul class="menu">
-        <li><a class="home" href="./index.html">Home</a></li>
-        <li><a class="product" href="./public/colecoes.html">Produtos</a></li>
-        <li><a class="about" href="./public/sobre.html">Sobre</a></li>
-        <li><a class="download" href="./public/download.html">Downloads</a></li>
-        <li><a class="tutorial" href="./public/tutorial-wallpaper.html">Como usar</a></li>
-        <li><a class="contact" href="./public/contato.html">Contato</a></li>
-        <li class="nav-wishlist nav-dropdown-hover" style="position:relative;">
-          <a href="./public/wishlist.html" id="wishlistNavLink" style="text-decoration:none;color:#63b3ed; font-size: 20px;">
-            Wishlist <span id="wishlistCount" style="font-weight:bold;">0</span>
-          </a>
-          <div id="wishlistDropdown" class="nav-dropdown" style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
-            <div id="wishlistPreview"></div>
-            <a href="./public/wishlist.html" style="display:block;padding:0.75rem 1.5rem;text-align:center;color:#1a365d;font-weight:600;text-decoration:none;">Ver Wishlist Completa</a>
+  <body>
+    <header>
+      <h1 class="logo"><a href="./index.html">Louco Sonhador</a></h1>
+      <nav>
+        <ul class="menu">
+          <li><a class="home" href="./index.html">Home</a></li>
+          <li><a class="product" href="./public/colecoes.html">Produtos</a></li>
+          <li><a class="about" href="./public/sobre.html">Sobre</a></li>
+          <li>
+            <a class="download" href="./public/download.html">Downloads</a>
+          </li>
+          <li>
+            <a class="tutorial" href="./public/tutorial-wallpaper.html"
+              >Como usar</a
+            >
+          </li>
+          <li><a class="contact" href="./public/contato.html">Contato</a></li>
+          <li
+            class="nav-wishlist nav-dropdown-hover"
+            style="position: relative"
+          >
+            <a
+              href="./public/wishlist.html"
+              id="wishlistNavLink"
+              style="text-decoration: none; color: #63b3ed; font-size: 20px"
+            >
+              Wishlist
+              <span id="wishlistCount" style="font-weight: bold">0</span>
+            </a>
+            <div
+              id="wishlistDropdown"
+              class="nav-dropdown"
+              style="
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 120%;
+                background: #efdac5;
+                border-radius: 0 0 12px 12px;
+                box-shadow: 0 4px 12px rgba(26, 54, 93, 0.08);
+                min-width: 220px;
+                max-height: 350px;
+                overflow-y: auto;
+                z-index: 1001;
+                padding: 1rem 0;
+                list-style: none;
+                margin: 0;
+              "
+            >
+              <div id="wishlistPreview"></div>
+              <a
+                href="./public/wishlist.html"
+                style="
+                  display: block;
+                  padding: 0.75rem 1.5rem;
+                  text-align: center;
+                  color: #1a365d;
+                  font-weight: 600;
+                  text-decoration: none;
+                "
+                >Ver Wishlist Completa</a
+              >
+            </div>
+          </li>
+          <li class="nav-cart nav-dropdown-hover" style="position: relative">
+            <a
+              href="./public/carrinho.html"
+              id="cartNavLink"
+              style="text-decoration: none; color: #63b3ed; font-size: 20px"
+            >
+              Carrinho <span id="cartCount" style="font-weight: bold">0</span>
+            </a>
+            <div
+              id="cartDropdown"
+              class="nav-dropdown"
+              style="
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 120%;
+                background: #efdac5;
+                border-radius: 0 0 12px 12px;
+                box-shadow: 0 4px 12px rgba(26, 54, 93, 0.08);
+                min-width: 220px;
+                max-height: 350px;
+                overflow-y: auto;
+                z-index: 1001;
+                padding: 1rem 0;
+                list-style: none;
+                margin: 0;
+              "
+            >
+              <div id="cartPreview"></div>
+              <a
+                href="./public/carrinho.html"
+                style="
+                  display: block;
+                  padding: 0.75rem 1.5rem;
+                  text-align: center;
+                  color: #1a365d;
+                  font-weight: 600;
+                  text-decoration: none;
+                "
+                >Ver Carrinho Completo</a
+              >
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="start">
+        <img class="boat" src="./assets/img/louco2.png" alt="Louco" />
+        <h1 class="phrase">Um mundo sem limites.</h1>
+      </div>
+      <h2 class="highlight-text">Produtos em destaque</h2>
+      <div class="highlight" id="produtos-destaque"></div>
+      <h2 class="category-text">Categorias</h2>
+      <div class="category">
+        <div class="category-1">
+          <img
+            class="category-img"
+            src="./assets/img/wallpaper-category.jpg"
+            alt=""
+          />
+          <h2>
+            <a href="./public/colecoes.html?categoria=wallpaper">Wallpapers</a>
+          </h2>
+        </div>
+        <div class="category-1">
+          <img
+            class="category-img"
+            src="./assets/img/palette-category.jpg"
+            alt=""
+          />
+          <h2><a href="./public/colecoes.html?categoria=paleta">Paletas</a></h2>
+        </div>
+      </div>
+      <h2 class="statements-text">Depoimentos de clientes</h2>
+      <div class="statements">
+        <div class="statement-1">
+          <div class="statement-header">
+            <img
+              class="statement-img"
+              src="./assets/img/person-circle-svgrepo-com.png"
+              alt=""
+            />
+            <span class="name">Liroli, dono de bar</span>
           </div>
-        </li>
-        <li class="nav-cart nav-dropdown-hover" style="position:relative;">
-          <a href="./public/carrinho.html" id="cartNavLink" style="text-decoration:none;color:#63b3ed; font-size: 20px;">
-            Carrinho <span id="cartCount" style="font-weight:bold;">0</span>
-          </a>
-          <div id="cartDropdown" class="nav-dropdown" style="display:none;position:absolute;right:0;top:120%;background:#efdac5;border-radius:0 0 12px 12px;box-shadow:0 4px 12px rgba(26,54,93,0.08);min-width:220px;max-height:350px;overflow-y:auto;z-index:1001;padding:1rem 0;list-style:none;margin:0;">
-            <div id="cartPreview"></div>
-            <a href="./public/carrinho.html" style="display:block;padding:0.75rem 1.5rem;text-align:center;color:#1a365d;font-weight:600;text-decoration:none;">Ver Carrinho Completo</a>
+          <div class="statement-text">
+            “O Louco Sonhador não é só um site, é um portal pra quem ainda
+            acredita em criar com a alma. Cada detalhe parece feito pra inspirar
+            a gente a sonhar alto sem medo.”
           </div>
-        </li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <div class="start">
-      <img class="boat" src="./assets/img/louco2.png" alt="Louco">
-      <h1 class="phrase">Um mundo sem limites.</h1>
-    </div>
-    <h2 class="highlight-text">Produtos em destaque</h2>
-    <div class="highlight" id="produtos-destaque">
-    </div>
-    <h2 class="category-text">Categorias</h2>
-    <div class="category">
-      <div class="category-1">
-        <img class="category-img" src="./assets/img/wallpaper-category.jpg" alt="">
-        <h2><a href="./public/colecoes.html?categoria=wallpaper">Wallpapers</a></h2>
-      </div>
-      <div class="category-1">
-        <img class="category-img" src="./assets/img/palette-category.jpg" alt="">
-        <h2><a href="./public/colecoes.html?categoria=paleta">Paletas</a></h2>
-      </div>
-    </div>
-    <h2 class="statements-text">Depoimentos de clientes</h2>
-    <div class="statements">
-      <div class="statement-1">
-        <div class="statement-header">
-          <img class="statement-img" src="./assets/img/person-circle-svgrepo-com.png" alt="">
-          <span class="name">Liroli, dono de bar</span>
         </div>
-        <div class="statement-text">
-          “O Louco Sonhador não é só um site, é um portal pra quem ainda acredita em criar com a alma. Cada detalhe
-          parece feito pra inspirar a gente a sonhar alto sem medo.”
+        <div class="statement-1">
+          <div class="statement-header">
+            <img
+              class="statement-img"
+              src="./assets/img/person-circle-svgrepo-com.svg"
+              alt=""
+            />
+            <span class="name">Lirolá, lutador de boxe</span>
+          </div>
+          <div class="statement-text">
+            “Nunca vi uma loja com tanta personalidade. Desde o visual até os
+            produtos, tudo aqui tem identidade própria. É diferente de tudo que
+            tem por aí.”
+          </div>
+        </div>
+        <div class="statement-1">
+          <div class="statement-header">
+            <img
+              class="statement-img"
+              src="./assets/img/person-circle-svgrepo-com.svg"
+              alt=""
+            />
+            <span class="name">Lirolee, ator de Hollywood</span>
+          </div>
+          <div class="statement-text">
+            “Eu entrei por curiosidade e fiquei porque senti que o site entende
+            quem vive no mundo das ideias. É tipo um cantinho criativo na
+            internet.”
+          </div>
         </div>
       </div>
-      <div class="statement-1">
-        <div class="statement-header">
-          <img class="statement-img" src="./assets/img/person-circle-svgrepo-com.svg" alt="">
-          <span class="name">Lirolá, lutador de boxe</span>
-        </div>
-        <div class="statement-text">
-          “Nunca vi uma loja com tanta personalidade. Desde o visual até os produtos, tudo aqui tem identidade própria.
-          É diferente de tudo que tem por aí.”
-        </div>
+    </main>
+    <footer>
+      <div class="footer-content">
+        <span>© 2025 Louco Sonhador. Todos os direitos reservados.</span>
+        <span>
+          <a href="https://instagram.com/1nerdola38" target="_blank"
+            >Instagram</a
+          >
+          | <a href="./public/sobre.html">Sobre</a> |
+          <a href="./public/contato.html">Contato</a> |
+          <a href="./public/privacidade.html">Política de Privacidade</a> |
+          <a href="./public/termos.html">Termos de Uso</a>
+        </span>
+        <span class="footer-creditos">
+          Site desenvolvido por
+          <a href="https://github.com/1GuriBot" target="_blank"
+            >Mateus De Nadai</a
+          >
+        </span>
       </div>
-      <div class="statement-1">
-        <div class="statement-header">
-          <img class="statement-img" src="./assets/img/person-circle-svgrepo-com.svg" alt="">
-          <span class="name">Lirolee, ator de Hollywood</span>
-        </div>
-        <div class="statement-text">
-          “Eu entrei por curiosidade e fiquei porque senti que o site entende quem vive no mundo das ideias. É tipo um
-          cantinho criativo na internet.”
-        </div>
-      </div>
-    </div>
-  </main>
-  <footer>
-    <div class="footer-content">
-      <span>© 2025 Louco Sonhador. Todos os direitos reservados.</span>
-      <span>
-        <a href="https://instagram.com/1nerdola38" target="_blank">Instagram</a> |
-        <a href="./public/sobre.html">Sobre</a> |
-        <a href="./public/contato.html">Contato</a> |
-        <a href="./public/privacidade.html">Política de Privacidade</a> |
-        <a href="./public/termos.html">Termos de Uso</a>
-      </span>
-      <span class="footer-creditos">
-        Site desenvolvido por <a href="https://github.com/1GuriBot" target="_blank">Mateus De Nadai</a>
-      </span>
-    </div>
-  </footer>
-  <script src="./public/js/auth.js"></script>
-  <script src="./public/js/main.js"></script>
-  <script>
-    // Funções para links corretos na index.html
-    function getDetalhesHrefIndex(produtoId) {
-      return `./public/detalhes.html?id=${produtoId}`;
-    }
-    function getCompraHrefIndex(produtoId) {
-      return `./public/compra.html?id=${produtoId}`;
-    }
-    // Exemplo de uso ao renderizar produtos:
-    // <a href="${getDetalhesHrefIndex(produto.id)}">Ver detalhes</a>
-    // <a href="${getCompraHrefIndex(produto.id)}">Comprar</a>
-  </script>
-</body>
-
+    </footer>
+    <script src="./public/js/auth.js"></script>
+    <script src="./public/js/main.js"></script>
+    <script>
+      // Funções para links corretos na index.html
+      function getDetalhesHrefIndex(produtoId) {
+        return `./public/detalhes.html?id=${produtoId}`;
+      }
+      function getCompraHrefIndex(produtoId) {
+        return `./public/compra.html?id=${produtoId}`;
+      }
+      // Exemplo de uso ao renderizar produtos:
+      // <a href="${getDetalhesHrefIndex(produto.id)}">Ver detalhes</a>
+      // <a href="${getCompraHrefIndex(produto.id)}">Comprar</a>
+    </script>
+  </body>
 </html>
