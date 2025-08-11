@@ -44,11 +44,11 @@ app.use('/api/carrinho', carrinhoRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 
 // Serve arquivos estáticos da pasta public
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname,'..', 'public')));
 
 // Rota principal para servir index.html na raiz
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 // Porta dinâmica para Render
@@ -56,3 +56,4 @@ const port = process.env.PORT || 3001;
 app.listen(port, '0.0.0.0', () => {
   console.log(`Servidor rodando na porta ${port}`);
 });
+
