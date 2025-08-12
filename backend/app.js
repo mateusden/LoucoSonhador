@@ -39,6 +39,9 @@ app.use('/downloads', express.static(path.join(__dirname, 'public/downloads')));
 app.use('/api/carrinho', require('./routes/carrinho'));
 app.use('/api/wishlist', require('./routes/wishlist'));
 
+app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
+
+
 // Serve os arquivos estáticos e outros HTMLs dentro da pasta public
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
