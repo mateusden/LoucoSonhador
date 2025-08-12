@@ -42,7 +42,7 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 - **Backend:** Node.js
 - **Banco de Dados:** MySQL e Insomnia
-- **Pagamentos:** Hotmart
+- **Pagamentos:** Mercado Pago
 - **Deploy:** Render e PlanetScale
 
 ## 📁 Estrutura do Projeto
@@ -128,22 +128,22 @@ louco-sonhador/
 ## 🌐 Deploy
 
 O site está hospedado no :
-- **URL:** 
+- **URL:https://loucosonhador.onrender.com/** 
 
 ## 🔒 Segurança
 
 ⚠️ **ATENÇÃO:** Este projeto não possui implementações de segurança adequadas para produção:
 
 - Autenticação média (MySQL)
-- Sem HTTPS em desenvolvimento
+- HTTPS
 - Sem validações robustas
 - Sistema de pagamentos automatizado
 
 ## 📞 Contato
 
 - **Desenvolvedor:** Mateus De Nadai
-- **GitHub:** [@1GuriBot](https://github.com/1GuriBot)
-- **Instagram:** [@1nerdola38](https://instagram.com/1nerdola38)
+- **GitHub:** [@1GuriBot](https://github.com/mateusden)
+- **Instagram:** [@1nerdola38](https://instagram.com/1.nerdola)
 
 ## 📄 Licença
 
@@ -153,4 +153,4 @@ Pode ser usada em projetos pessoais e comerciais, mas não pode revender a arte 
 
 **Última atualização:** 24 Julho 2025
 
-**Versão:** 0.8 (Beta)
+**Versão:** 0.9 (Beta)
