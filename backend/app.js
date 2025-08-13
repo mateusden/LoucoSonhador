@@ -1,21 +1,24 @@
-const path = require('path');
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+// app.js
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import pkg from 'pg';
+const { Pool } = pkg;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
-import 'dotenv/config'
-// index.js ou app.js
 
-const { Pool } = require('pg');
-
+// Pool PostgreSQL
 const pool = new Pool({
-  connectionString: process.env.postgresql://postgres:[]@db.jivyarrcbctlqhmgbycl.supabase.co:5432/postgres,  // tua variável de ambiente
-  ssl: {
-    rejectUnauthorized: false  // importante pro Supabase aceitar o certificado SSL
-  }
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false } // obrigatório Supabase
 });
 
+// Testa a conexão
 async function testConnection() {
   try {
     const res = await pool.query('SELECT NOW()');
@@ -24,17 +27,14 @@ async function testConnection() {
     console.error('Erro na conexão:', err);
   }
 }
-
 testConnection();
 
-// exporta pool pra usar em outras partes do backend
-module.exports = pool;
+// Exporta pool
+export { pool };
 
-
-// Configuração CORS (igual antes)
+// CORS
 app.use(cors({
   origin: [
-    // teus domínios aqui...
     'http://localhost:3001',
     'http://127.0.0.1:5500',
     'http://localhost:5500',
@@ -50,33 +50,31 @@ app.use(cors({
     'https://loucosonhador.onrender.com'
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization','X-Requested-With']
 }));
 
 app.use(express.json());
 app.use(cookieParser());
 
-// Rotas API (do jeito que tu já tem)
-app.use('/api/produtos', require('./routes/products'));
-app.use('/api/users', require('./routes/users'));
-app.use('/api/downloads', require('./routes/downloads'));
+// Rotas API
+app.use('/api/produtos', (await import('./routes/products.js')).default);
+app.use('/api/users', (await import('./routes/users.js')).default);
+app.use('/api/downloads', (await import('./routes/downloads.js')).default);
+app.use('/api/carrinho', (await import('./routes/carrinho.js')).default);
+app.use('/api/wishlist', (await import('./routes/wishlist.js')).default);
+
+// Rotas estáticas
 app.use('/downloads', express.static(path.join(__dirname, 'public/downloads')));
-app.use('/api/carrinho', require('./routes/carrinho'));
-app.use('/api/wishlist', require('./routes/wishlist'));
-
 app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
-
-
-// Serve os arquivos estáticos e outros HTMLs dentro da pasta public
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Serve index.html que está na raiz na rota '/'
+// Serve index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
-// Porta dinâmica do Render
+// Porta dinâmica
 const port = process.env.PORT || 3001;
 app.listen(port, '0.0.0.0', () => {
   console.log(`Servidor rodando na porta ${port}`);
