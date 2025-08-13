@@ -63,7 +63,6 @@ louco-sonhador/
 │   │   ├── Sale.js
 │   │   └── User.js
 │   ├── package.json
-│   ├── node_modules/
 │   ├── package-lock.json
 │   ├── public/
 │   │   ├── css/
@@ -76,6 +75,7 @@ louco-sonhador/
 │   │   ├── users.js
 │   │   ├── wishlist.js
 ├── index.html                   # Página inicial
+├── .gitignore
 ├── public/                      # Arquivos do frontend
 │   ├── carrinho.html            # Carrinho de compras
 │   ├── cliente/                 # Área do cliente
