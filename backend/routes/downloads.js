@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database/connection');
+const pool = require('../database/connection'); // Certifique-se que está configurado para PostgreSQL
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -24,12 +24,19 @@ router.post('/', upload.single('arquivo'), async (req, res) => {
   if (!arquivo) return res.status(400).json({ error: 'Arquivo é obrigatório!' });
 
   try {
-    const [result] = await pool.query(
-      'INSERT INTO downloads (nome, arquivo, descricao) VALUES (?, ?, ?)',
+    // PostgreSQL usa RETURNING para pegar o ID inserido
+    const result = await pool.query(
+      'INSERT INTO downloads (nome, arquivo, descricao) VALUES ($1, $2, $3) RETURNING id',
       [nome, arquivo, descricao]
     );
-    res.status(201).json({ id: result.insertId, nome, arquivo, descricao });
+    res.status(201).json({ 
+      id: result.rows[0].id, // PostgreSQL retorna rows[0].id
+      nome, 
+      arquivo, 
+      descricao 
+    });
   } catch (err) {
+    console.error('Erro ao cadastrar download:', err);
     res.status(400).json({ error: 'Erro ao cadastrar download' });
   }
 });
@@ -45,12 +52,18 @@ router.put('/:id', upload.single('arquivo'), async (req, res) => {
   }
 
   try {
-    const [result] = await pool.query(
-      'UPDATE downloads SET nome = ?, arquivo = ?, descricao = ? WHERE id = ?',
+    const result = await pool.query(
+      'UPDATE downloads SET nome = $1, arquivo = $2, descricao = $3 WHERE id = $4',
       [nome, arquivo, descricao, id]
     );
+    
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Download não encontrado' });
+    }
+    
     res.json({ message: 'Download atualizado com sucesso!' });
   } catch (err) {
+    console.error('Erro ao atualizar download:', err);
     res.status(400).json({ error: 'Erro ao atualizar download' });
   }
 });
@@ -58,36 +71,50 @@ router.put('/:id', upload.single('arquivo'), async (req, res) => {
 // Listar todos os downloads
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM downloads');
-    res.json(rows);
+    const result = await pool.query('SELECT * FROM downloads ORDER BY id DESC');
+    res.json(result.rows); // PostgreSQL usa result.rows
   } catch (err) {
+    console.error('Erro ao buscar downloads:', err);
     res.status(500).json({ error: 'Erro ao buscar downloads' });
   }
 });
 
 // Buscar download por id
 router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-      const [rows] = await pool.query('SELECT * FROM downloads WHERE id = ?', [id]);
-      if (rows.length === 0) {
-        return res.status(404).json({ error: 'Download não encontrado' });
-      }
-      res.json(rows[0]);
-    } catch (err) {
-      res.status(500).json({ error: 'Erro ao buscar download' });
+  const { id } = req.params;
+  try {
+    const result = await pool.query('SELECT * FROM downloads WHERE id = $1', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Download não encontrado' });
     }
-  });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao buscar download:', err);
+    res.status(500).json({ error: 'Erro ao buscar download' });
+  }
+});
 
 // Baixar um arquivo
 router.get('/file/:filename', (req, res) => {
   const filePath = path.join(__dirname, '../public/downloads', req.params.filename);
+  
+  // Verificar se o arquivo existe antes de tentar fazer download
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'Arquivo não encontrado' });
+  }
+  
   res.download(filePath);
 });
 
 // Forçar download de qualquer arquivo da pasta downloads
 router.get('/force/:filename', (req, res) => {
   const filePath = path.join(__dirname, '../public/downloads', req.params.filename);
+  
+  // Verificar se o arquivo existe antes de tentar fazer download
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'Arquivo não encontrado' });
+  }
+  
   res.download(filePath);
 });
 
@@ -96,14 +123,16 @@ router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
     // Primeiro, pega o nome do arquivo para excluir do disco
-    const [rows] = await pool.query('SELECT arquivo FROM downloads WHERE id = ?', [id]);
-    if (rows.length === 0) return res.status(404).json({ error: 'Download não encontrado' });
+    const result = await pool.query('SELECT arquivo FROM downloads WHERE id = $1', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Download não encontrado' });
+    }
 
-    const arquivo = rows[0].arquivo;
+    const arquivo = result.rows[0].arquivo;
     const filePath = path.join(__dirname, '../public/downloads', arquivo);
 
     // Exclui do banco
-    await pool.query('DELETE FROM downloads WHERE id = ?', [id]);
+    await pool.query('DELETE FROM downloads WHERE id = $1', [id]);
 
     // Exclui o arquivo do disco (se existir)
     fs.unlink(filePath, (err) => {
@@ -113,6 +142,7 @@ router.delete('/:id', async (req, res) => {
 
     res.json({ message: 'Download excluído com sucesso!' });
   } catch (err) {
+    console.error('Erro ao excluir download:', err);
     res.status(500).json({ error: 'Erro ao excluir download' });
   }
 });

@@ -13,11 +13,12 @@ router.post('/register', async (req, res) => {
   
   try {
     const hash = await bcrypt.hash(senha, 10);
-    const [result] = await pool.query(
-      'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
+    const result = await pool.query(
+      'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3) RETURNING *',
       [nome, email, hash]
     );
-    res.status(201).json({ id: result.insertId, nome, email });
+    const novoUsuario = result.rows[0];  // ← era result.insertId
+    res.status(201).json({ id: novoUsuario.id, nome: novoUsuario.nome, email: novoUsuario.email });
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err);
     res.status(400).json({ error: 'Erro ao cadastrar usuário' });
@@ -29,13 +30,13 @@ router.post('/login', async (req, res) => {
   const { email, senha } = req.body;
   
   try {
-    const [rows] = await pool.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+    const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
     
-    if (rows.length === 0) {
+    if (result.rows.length === 0) {  // ← era rows.length
       return res.status(401).json({ error: 'Usuário não encontrado' });
     }
     
-    const usuario = rows[0];
+    const usuario = result.rows[0];  // ← era rows[0]
     const match = await bcrypt.compare(senha, usuario.senha);
     
     if (!match) {
@@ -73,11 +74,14 @@ router.post('/login', async (req, res) => {
 // Perfil (rota protegida)
 router.get('/perfil', autenticarToken, async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT id, nome, email, nascimento, genero FROM usuarios WHERE id = ?', [req.user.id]);
-    if (rows.length === 0) {
+    const result = await pool.query(
+      'SELECT id, nome, email, nascimento, genero FROM usuarios WHERE id = $1', 
+      [req.user.id]
+    );
+    if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    res.json({ user: rows[0] });
+    res.json({ user: result.rows[0] });
   } catch (err) {
     res.status(500).json({ error: 'Erro ao buscar perfil do usuário' });
   }
@@ -90,17 +94,37 @@ router.put('/perfil', autenticarToken, async (req, res) => {
     return res.status(400).json({ error: 'Nenhum dado para atualizar.' });
   }
   try {
-    // Monta query dinâmica
+    // Monta query dinâmica (PostgreSQL style)
     let campos = [];
     let valores = [];
-    if (nome) { campos.push('nome = ?'); valores.push(nome); }
-    if (nascimento) { campos.push('nascimento = ?'); valores.push(nascimento); }
-    if (genero) { campos.push('genero = ?'); valores.push(genero); }
+    let paramIndex = 1;
+    
+    if (nome) { 
+      campos.push(`nome = $${paramIndex}`); 
+      valores.push(nome); 
+      paramIndex++; 
+    }
+    if (nascimento) { 
+      campos.push(`nascimento = $${paramIndex}`); 
+      valores.push(nascimento); 
+      paramIndex++; 
+    }
+    if (genero) { 
+      campos.push(`genero = $${paramIndex}`); 
+      valores.push(genero); 
+      paramIndex++; 
+    }
+    
     valores.push(req.user.id);
-    const sql = `UPDATE usuarios SET ${campos.join(', ')} WHERE id = ?`;
-    await pool.query(sql, valores);
-    res.json({ message: 'Perfil atualizado com sucesso!' });
+    const sql = `UPDATE usuarios SET ${campos.join(', ')} WHERE id = $${paramIndex} RETURNING *`;
+    
+    const result = await pool.query(sql, valores);
+    res.json({ 
+      message: 'Perfil atualizado com sucesso!',
+      user: result.rows[0]
+    });
   } catch (err) {
+    console.error('Erro ao atualizar perfil:', err);
     res.status(500).json({ error: 'Erro ao atualizar perfil' });
   }
 });
@@ -113,21 +137,24 @@ router.post('/senha', autenticarToken, async (req, res) => {
   }
   try {
     // Busca usuário atual
-    const [rows] = await pool.query('SELECT * FROM usuarios WHERE id = ?', [req.user.id]);
-    if (rows.length === 0) {
+    const result = await pool.query('SELECT * FROM usuarios WHERE id = $1', [req.user.id]);
+    if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    const usuario = rows[0];
+    const usuario = result.rows[0];
+    
     // Verifica senha atual
     const match = await bcrypt.compare(senhaAtual, usuario.senha);
     if (!match) {
       return res.status(401).json({ error: 'Senha atual incorreta' });
     }
+    
     // Atualiza senha
     const hash = await bcrypt.hash(novaSenha, 10);
-    await pool.query('UPDATE usuarios SET senha = ? WHERE id = ?', [hash, req.user.id]);
+    await pool.query('UPDATE usuarios SET senha = $1 WHERE id = $2', [hash, req.user.id]);
     res.json({ message: 'Senha alterada com sucesso!' });
   } catch (err) {
+    console.error('Erro ao alterar senha:', err);
     res.status(500).json({ error: 'Erro ao alterar senha' });
   }
 });
@@ -146,34 +173,38 @@ router.get('/check-auth', autenticarToken, (req, res) => {
   });
 });
 
-// Resumo de compras do usuário logado
-const Sale = require('../models/Sale');
-
+// Resumo de compras do usuário logado (convertido de MongoDB para PostgreSQL)
 router.get('/resumo-compras', autenticarToken, async (req, res) => {
   try {
     // Busca todas as vendas onde o usuário é o comprador e o status é 'pago'
-    const vendas = await Sale.find({ buyer: req.user.id, status: 'pago' });
-    const totalProdutosComprados = vendas.length;
-    const totalGasto = vendas.reduce((soma, venda) => soma + (venda.price || 0), 0);
-    res.json({ totalProdutosComprados, totalGasto });
+    const result = await pool.query(
+      'SELECT COUNT(*) as total_produtos, SUM(preco) as total_gasto FROM vendas WHERE user_id = $1 AND status = $2',
+      [req.user.id, 'pago']
+    );
+    
+    const { total_produtos, total_gasto } = result.rows[0];
+    res.json({ 
+      totalProdutosComprados: parseInt(total_produtos) || 0,
+      totalGasto: parseFloat(total_gasto) || 0
+    });
   } catch (err) {
+    console.error('Erro ao buscar resumo de compras:', err);
     res.status(500).json({ error: 'Erro ao buscar resumo de compras' });
   }
 });
 
-// Produtos comprados pelo usuário logado (versão MySQL)
-const db = require('../database/connection');
-
+// Produtos comprados pelo usuário logado
 router.get('/produtos-comprados', autenticarToken, async (req, res) => {
   try {
-    const [rows] = await db.query(`
+    const result = await pool.query(`
       SELECT p.id, p.nome, p.imagem, p.arquivo, v.data_compra, v.preco
       FROM vendas v
       JOIN produtos p ON v.product_id = p.id
-      WHERE v.user_id = ? AND v.status = 'pago'
+      WHERE v.user_id = $1 AND v.status = $2
       ORDER BY v.data_compra DESC
-    `, [req.user.id]);
-    const produtos = rows.map(row => ({
+    `, [req.user.id, 'pago']);
+    
+    const produtos = result.rows.map(row => ({
       id: row.id,
       nome: row.nome,
       imagem: row.imagem,
@@ -181,6 +212,7 @@ router.get('/produtos-comprados', autenticarToken, async (req, res) => {
       dataCompra: row.data_compra,
       preco: row.preco
     }));
+    
     res.json({ produtos });
   } catch (err) {
     console.error('Erro ao buscar produtos comprados:', err);
@@ -195,12 +227,16 @@ router.post('/registrar-compra', async (req, res) => {
     return res.status(400).json({ error: 'user_id, product_id e preco são obrigatórios.' });
   }
   try {
-    await db.query(
-      'INSERT INTO vendas (user_id, product_id, preco, status) VALUES (?, ?, ?, ?)',
+    const result = await pool.query(
+      'INSERT INTO vendas (user_id, product_id, preco, status) VALUES ($1, $2, $3, $4) RETURNING *',
       [user_id, product_id, preco, 'pago']
     );
-    res.json({ message: 'Compra registrada com sucesso!' });
+    res.json({ 
+      message: 'Compra registrada com sucesso!',
+      compra: result.rows[0]
+    });
   } catch (err) {
+    console.error('Erro ao registrar compra:', err);
     res.status(500).json({ error: 'Erro ao registrar compra' });
   }
 });
@@ -212,12 +248,18 @@ router.delete('/remover-compra', async (req, res) => {
     return res.status(400).json({ error: 'user_id e product_id são obrigatórios.' });
   }
   try {
-    await db.query(
-      'DELETE FROM vendas WHERE user_id = ? AND product_id = ? AND status = ? LIMIT 1',
+    const result = await pool.query(
+      'DELETE FROM vendas WHERE user_id = $1 AND product_id = $2 AND status = $3',
       [user_id, product_id, 'pago']
     );
+    
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Compra não encontrada' });
+    }
+    
     res.json({ message: 'Compra removida com sucesso!' });
   } catch (err) {
+    console.error('Erro ao remover compra:', err);
     res.status(500).json({ error: 'Erro ao remover compra' });
   }
 });

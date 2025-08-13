@@ -1,18 +1,58 @@
-const mongoose = require('mongoose');
+const pool = require('../database/connection');
 
-const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['seller', 'admin'], default: 'seller' },
-  bankData: {
-    pix: String,
-    bank: String,
-    agency: String,
-    account: String,
-    paypal: String,
-  },
-  createdAt: { type: Date, default: Date.now },
-});
+class User {
+  static async create(userData) {
+    const { name, email, password, role = 'seller', bankData = {} } = userData;
+    
+    const query = `
+      INSERT INTO users (name, email, password, role, bank_data, created_at) 
+      VALUES ($1, $2, $3, $4, $5, NOW()) 
+      RETURNING *
+    `;
+    
+    const values = [name, email, password, role, JSON.stringify(bankData)];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  }
 
-module.exports = mongoose.model('User', UserSchema); 
+  static async findById(id) {
+    const query = 'SELECT * FROM users WHERE id = $1';
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  }
+
+  static async findByEmail(email) {
+    const query = 'SELECT * FROM users WHERE email = $1';
+    const result = await pool.query(query, [email]);
+    return result.rows[0];
+  }
+
+  static async update(id, userData) {
+    const { name, email, role, bankData } = userData;
+    
+    const query = `
+      UPDATE users 
+      SET name = $1, email = $2, role = $3, bank_data = $4
+      WHERE id = $5 
+      RETURNING *
+    `;
+    
+    const values = [name, email, role, JSON.stringify(bankData), id];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  }
+
+  static async delete(id) {
+    const query = 'DELETE FROM users WHERE id = $1 RETURNING *';
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  }
+
+  static async findAll() {
+    const query = 'SELECT * FROM users ORDER BY created_at DESC';
+    const result = await pool.query(query);
+    return result.rows;
+  }
+}
+
+module.exports = User;

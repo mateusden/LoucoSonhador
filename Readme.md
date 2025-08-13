@@ -41,9 +41,9 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 - **Backend:** Node.js
-- **Banco de Dados:** MySQL e Insomnia
+- **Banco de Dados:** PostgreSQL e Insomnia
 - **Pagamentos:** Mercado Pago
-- **Deploy:** Render e PlanetScale
+- **Deploy:** Render e Supabase
 
 ## 📁 Estrutura do Projeto
 
@@ -51,11 +51,11 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 louco-sonhador/
 ├── assets/                      # Imagens e ícones
 │   └── img/                     # Imagens diversas do projeto
-├── backend/                     # API e backend (em desenvolvimento)
+├── backend/                     # API e backend
 │   ├── app.js                   # Arquivo principal do backend
 │   ├── database/
 │   │   └── connection.js        # Conexão com banco de dados
-│   ├── middleware/              # Middlewares (vazio)
+│   ├── middleware/              # Middlewares 
 │   │   ├── auth.js
 │   ├── models/                  # Modelos do banco de dados
 │   │   ├── Payment.js
@@ -69,7 +69,7 @@ louco-sonhador/
 │   │   ├── css/
 │   │   ├── downloads/
 │   │   └── js/
-│   └── routes/                  # Rotas da API (vazio)
+│   └── routes/                  # Rotas da API
 │   │   ├── carrinho.js
 │   │   ├── downloads.js
 │   │   ├── product.js
@@ -134,7 +134,7 @@ O site está hospedado no :
 
 ⚠️ **ATENÇÃO:** Este projeto não possui implementações de segurança adequadas para produção:
 
-- Autenticação média (MySQL)
+- Autenticação média (PostgreSQL)
 - HTTPS
 - Sem validações robustas
 - Sistema de pagamentos automatizado
@@ -153,4 +153,4 @@ Pode ser usada em projetos pessoais e comerciais, mas não pode revender a arte 
 
 **Última atualização:** 24 Julho 2025
 
-**Versão:** 0.9 (Beta)
+**Versão:** 0.95 (Beta)
