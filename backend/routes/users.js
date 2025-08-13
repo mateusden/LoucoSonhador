@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database/connection');
+const { pool } = require('../database/connection'); // ← MUDANÇA: { pool }
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const autenticarToken = require('../middleware/auth');
@@ -13,12 +13,19 @@ router.post('/register', async (req, res) => {
   
   try {
     const hash = await bcrypt.hash(senha, 10);
-    const result = await pool.query(
+    const client = await pool.connect();
+    const result = await client.query(
       'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3) RETURNING *',
       [nome, email, hash]
     );
-    const novoUsuario = result.rows[0];  // ← era result.insertId
-    res.status(201).json({ id: novoUsuario.id, nome: novoUsuario.nome, email: novoUsuario.email });
+    client.release();
+    
+    const novoUsuario = result.rows[0];
+    res.status(201).json({ 
+      id: novoUsuario.id, 
+      nome: novoUsuario.nome, 
+      email: novoUsuario.email 
+    });
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err);
     res.status(400).json({ error: 'Erro ao cadastrar usuário' });
@@ -30,13 +37,15 @@ router.post('/login', async (req, res) => {
   const { email, senha } = req.body;
   
   try {
-    const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    client.release();
     
-    if (result.rows.length === 0) {  // ← era rows.length
+    if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Usuário não encontrado' });
     }
     
-    const usuario = result.rows[0];  // ← era rows[0]
+    const usuario = result.rows[0];
     const match = await bcrypt.compare(senha, usuario.senha);
     
     if (!match) {
@@ -74,10 +83,13 @@ router.post('/login', async (req, res) => {
 // Perfil (rota protegida)
 router.get('/perfil', autenticarToken, async (req, res) => {
   try {
-    const result = await pool.query(
+    const client = await pool.connect();
+    const result = await client.query(
       'SELECT id, nome, email, nascimento, genero FROM usuarios WHERE id = $1', 
       [req.user.id]
     );
+    client.release();
+    
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
@@ -93,6 +105,7 @@ router.put('/perfil', autenticarToken, async (req, res) => {
   if (!nome && !nascimento && !genero) {
     return res.status(400).json({ error: 'Nenhum dado para atualizar.' });
   }
+  
   try {
     // Monta query dinâmica (PostgreSQL style)
     let campos = [];
@@ -118,7 +131,10 @@ router.put('/perfil', autenticarToken, async (req, res) => {
     valores.push(req.user.id);
     const sql = `UPDATE usuarios SET ${campos.join(', ')} WHERE id = $${paramIndex} RETURNING *`;
     
-    const result = await pool.query(sql, valores);
+    const client = await pool.connect();
+    const result = await client.query(sql, valores);
+    client.release();
+    
     res.json({ 
       message: 'Perfil atualizado com sucesso!',
       user: result.rows[0]
@@ -135,23 +151,31 @@ router.post('/senha', autenticarToken, async (req, res) => {
   if (!senhaAtual || !novaSenha) {
     return res.status(400).json({ error: 'Preencha todos os campos.' });
   }
+  
   try {
+    const client = await pool.connect();
+    
     // Busca usuário atual
-    const result = await pool.query('SELECT * FROM usuarios WHERE id = $1', [req.user.id]);
+    const result = await client.query('SELECT * FROM usuarios WHERE id = $1', [req.user.id]);
     if (result.rows.length === 0) {
+      client.release();
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
+    
     const usuario = result.rows[0];
     
     // Verifica senha atual
     const match = await bcrypt.compare(senhaAtual, usuario.senha);
     if (!match) {
+      client.release();
       return res.status(401).json({ error: 'Senha atual incorreta' });
     }
     
     // Atualiza senha
     const hash = await bcrypt.hash(novaSenha, 10);
-    await pool.query('UPDATE usuarios SET senha = $1 WHERE id = $2', [hash, req.user.id]);
+    await client.query('UPDATE usuarios SET senha = $1 WHERE id = $2', [hash, req.user.id]);
+    client.release();
+    
     res.json({ message: 'Senha alterada com sucesso!' });
   } catch (err) {
     console.error('Erro ao alterar senha:', err);
@@ -173,14 +197,15 @@ router.get('/check-auth', autenticarToken, (req, res) => {
   });
 });
 
-// Resumo de compras do usuário logado (convertido de MongoDB para PostgreSQL)
+// Resumo de compras do usuário logado
 router.get('/resumo-compras', autenticarToken, async (req, res) => {
   try {
-    // Busca todas as vendas onde o usuário é o comprador e o status é 'pago'
-    const result = await pool.query(
+    const client = await pool.connect();
+    const result = await client.query(
       'SELECT COUNT(*) as total_produtos, SUM(preco) as total_gasto FROM vendas WHERE user_id = $1 AND status = $2',
       [req.user.id, 'pago']
     );
+    client.release();
     
     const { total_produtos, total_gasto } = result.rows[0];
     res.json({ 
@@ -196,13 +221,15 @@ router.get('/resumo-compras', autenticarToken, async (req, res) => {
 // Produtos comprados pelo usuário logado
 router.get('/produtos-comprados', autenticarToken, async (req, res) => {
   try {
-    const result = await pool.query(`
+    const client = await pool.connect();
+    const result = await client.query(`
       SELECT p.id, p.nome, p.imagem, p.arquivo, v.data_compra, v.preco
       FROM vendas v
       JOIN produtos p ON v.product_id = p.id
       WHERE v.user_id = $1 AND v.status = $2
       ORDER BY v.data_compra DESC
     `, [req.user.id, 'pago']);
+    client.release();
     
     const produtos = result.rows.map(row => ({
       id: row.id,
@@ -226,11 +253,15 @@ router.post('/registrar-compra', async (req, res) => {
   if (!user_id || !product_id || !preco) {
     return res.status(400).json({ error: 'user_id, product_id e preco são obrigatórios.' });
   }
+  
   try {
-    const result = await pool.query(
+    const client = await pool.connect();
+    const result = await client.query(
       'INSERT INTO vendas (user_id, product_id, preco, status) VALUES ($1, $2, $3, $4) RETURNING *',
       [user_id, product_id, preco, 'pago']
     );
+    client.release();
+    
     res.json({ 
       message: 'Compra registrada com sucesso!',
       compra: result.rows[0]
@@ -247,11 +278,14 @@ router.delete('/remover-compra', async (req, res) => {
   if (!user_id || !product_id) {
     return res.status(400).json({ error: 'user_id e product_id são obrigatórios.' });
   }
+  
   try {
-    const result = await pool.query(
+    const client = await pool.connect();
+    const result = await client.query(
       'DELETE FROM vendas WHERE user_id = $1 AND product_id = $2 AND status = $3',
       [user_id, product_id, 'pago']
     );
+    client.release();
     
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Compra não encontrada' });

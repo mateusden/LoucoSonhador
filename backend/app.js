@@ -4,6 +4,32 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const app = express();
+import 'dotenv/config'
+// index.js ou app.js
+
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.postgresql://postgres:[]@db.jivyarrcbctlqhmgbycl.supabase.co:5432/postgres,  // tua variável de ambiente
+  ssl: {
+    rejectUnauthorized: false  // importante pro Supabase aceitar o certificado SSL
+  }
+});
+
+async function testConnection() {
+  try {
+    const res = await pool.query('SELECT NOW()');
+    console.log('Banco conectado! Hora:', res.rows[0].now);
+  } catch (err) {
+    console.error('Erro na conexão:', err);
+  }
+}
+
+testConnection();
+
+// exporta pool pra usar em outras partes do backend
+module.exports = pool;
+
 
 // Configuração CORS (igual antes)
 app.use(cors({

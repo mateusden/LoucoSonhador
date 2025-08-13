@@ -1,92 +1,99 @@
-const pool = require('../database/connection');
+const { pool } = require('../database/connection'); // ← MUDANÇA: { pool }
 
-class Sale {
-  static async create(saleData) {
+class Payment {
+  static async create(paymentData) {
     const { 
-      product, buyer, seller, price, 
-      status = 'pendente', downloadCount = 0 
-    } = saleData;
+      seller, amount, method, 
+      status = 'pendente' 
+    } = paymentData;
     
     const query = `
-      INSERT INTO sales (
-        product_id, buyer_id, seller_id, price, 
-        date, status, download_count
-      ) 
-      VALUES ($1, $2, $3, $4, NOW(), $5, $6) 
+      INSERT INTO payments (seller_id, amount, status, method, requested_at) 
+      VALUES ($1, $2, $3, $4, NOW()) 
       RETURNING *
     `;
     
-    const values = [product, buyer, seller, price, status, downloadCount];
-    const result = await pool.query(query, values);
-    return result.rows[0];
+    const values = [seller, amount, status, method];
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, values);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
   }
 
   static async findById(id) {
     const query = `
-      SELECT s.*, 
-             p.title as product_title,
-             u1.name as buyer_name, u1.email as buyer_email,
-             u2.name as seller_name, u2.email as seller_email
-      FROM sales s
-      LEFT JOIN products p ON s.product_id = p.id
-      LEFT JOIN users u1 ON s.buyer_id = u1.id
-      LEFT JOIN users u2 ON s.seller_id = u2.id
-      WHERE s.id = $1
+      SELECT p.*, u.name as seller_name, u.email as seller_email, u.bank_data
+      FROM payments p
+      LEFT JOIN users u ON p.seller_id = u.id
+      WHERE p.id = $1
     `;
-    const result = await pool.query(query, [id]);
-    return result.rows[0];
-  }
-
-  static async findByBuyer(buyerId) {
-    const query = `
-      SELECT s.*, p.title as product_title, p.files
-      FROM sales s
-      LEFT JOIN products p ON s.product_id = p.id
-      WHERE s.buyer_id = $1 AND s.status = 'pago'
-      ORDER BY s.date DESC
-    `;
-    const result = await pool.query(query, [buyerId]);
-    return result.rows;
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, [id]);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
   }
 
   static async findBySeller(sellerId) {
+    const query = 'SELECT * FROM payments WHERE seller_id = $1 ORDER BY requested_at DESC';
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, [sellerId]);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
+
+  static async findPending() {
     const query = `
-      SELECT s.*, p.title as product_title, u.name as buyer_name
-      FROM sales s
-      LEFT JOIN products p ON s.product_id = p.id
-      LEFT JOIN users u ON s.buyer_id = u.id
-      WHERE s.seller_id = $1
-      ORDER BY s.date DESC
+      SELECT p.*, u.name as seller_name, u.bank_data
+      FROM payments p
+      LEFT JOIN users u ON p.seller_id = u.id
+      WHERE p.status = 'pendente'
+      ORDER BY p.requested_at ASC
     `;
-    const result = await pool.query(query, [sellerId]);
-    return result.rows;
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
+
+  static async markAsPaid(id) {
+    const query = 'UPDATE payments SET status = $1, paid_at = NOW() WHERE id = $2 RETURNING *';
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, ['pago', id]);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
   }
 
   static async updateStatus(id, status) {
-    const query = 'UPDATE sales SET status = $1 WHERE id = $2 RETURNING *';
-    const result = await pool.query(query, [status, id]);
-    return result.rows[0];
-  }
-
-  static async incrementDownload(id) {
-    const query = 'UPDATE sales SET download_count = download_count + 1 WHERE id = $1 RETURNING *';
-    const result = await pool.query(query, [id]);
-    return result.rows[0];
-  }
-
-  static async getSellerStats(sellerId) {
-    const query = `
-      SELECT 
-        COUNT(*) as total_sales,
-        SUM(price) as total_revenue,
-        COUNT(CASE WHEN status = 'pago' THEN 1 END) as paid_sales,
-        COUNT(CASE WHEN status = 'pendente' THEN 1 END) as pending_sales
-      FROM sales 
-      WHERE seller_id = $1
-    `;
-    const result = await pool.query(query, [sellerId]);
-    return result.rows[0];
+    const query = 'UPDATE payments SET status = $1 WHERE id = $2 RETURNING *';
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, [status, id]);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
   }
 }
 
-module.exports = Sale;
+module.exports = Payment;

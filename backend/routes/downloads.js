@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database/connection'); // Certifique-se que está configurado para PostgreSQL
+const { pool } = require('../database/connection'); // ← MUDANÇA: { pool }
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -24,13 +24,15 @@ router.post('/', upload.single('arquivo'), async (req, res) => {
   if (!arquivo) return res.status(400).json({ error: 'Arquivo é obrigatório!' });
 
   try {
-    // PostgreSQL usa RETURNING para pegar o ID inserido
-    const result = await pool.query(
+    const client = await pool.connect();
+    const result = await client.query(
       'INSERT INTO downloads (nome, arquivo, descricao) VALUES ($1, $2, $3) RETURNING id',
       [nome, arquivo, descricao]
     );
+    client.release();
+    
     res.status(201).json({ 
-      id: result.rows[0].id, // PostgreSQL retorna rows[0].id
+      id: result.rows[0].id,
       nome, 
       arquivo, 
       descricao 
@@ -52,10 +54,12 @@ router.put('/:id', upload.single('arquivo'), async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
+    const client = await pool.connect();
+    const result = await client.query(
       'UPDATE downloads SET nome = $1, arquivo = $2, descricao = $3 WHERE id = $4',
       [nome, arquivo, descricao, id]
     );
+    client.release();
     
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Download não encontrado' });
@@ -71,8 +75,10 @@ router.put('/:id', upload.single('arquivo'), async (req, res) => {
 // Listar todos os downloads
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM downloads ORDER BY id DESC');
-    res.json(result.rows); // PostgreSQL usa result.rows
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM downloads ORDER BY id DESC');
+    client.release();
+    res.json(result.rows);
   } catch (err) {
     console.error('Erro ao buscar downloads:', err);
     res.status(500).json({ error: 'Erro ao buscar downloads' });
@@ -83,7 +89,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM downloads WHERE id = $1', [id]);
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM downloads WHERE id = $1', [id]);
+    client.release();
+    
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Download não encontrado' });
     }
@@ -122,9 +131,12 @@ router.get('/force/:filename', (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
+    const client = await pool.connect();
+    
     // Primeiro, pega o nome do arquivo para excluir do disco
-    const result = await pool.query('SELECT arquivo FROM downloads WHERE id = $1', [id]);
+    const result = await client.query('SELECT arquivo FROM downloads WHERE id = $1', [id]);
     if (result.rows.length === 0) {
+      client.release();
       return res.status(404).json({ error: 'Download não encontrado' });
     }
 
@@ -132,7 +144,8 @@ router.delete('/:id', async (req, res) => {
     const filePath = path.join(__dirname, '../public/downloads', arquivo);
 
     // Exclui do banco
-    await pool.query('DELETE FROM downloads WHERE id = $1', [id]);
+    await client.query('DELETE FROM downloads WHERE id = $1', [id]);
+    client.release();
 
     // Exclui o arquivo do disco (se existir)
     fs.unlink(filePath, (err) => {
