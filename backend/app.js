@@ -1,15 +1,11 @@
 // app.js
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import pkg from 'pg';
-const { Pool } = pkg;
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const { Pool } = require('pg');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const app = express();
 
 // Pool PostgreSQL
@@ -30,7 +26,7 @@ async function testConnection() {
 testConnection();
 
 // Exporta pool
-export { pool };
+module.exports.pool = pool;
 
 // CORS
 app.use(cors({
@@ -58,11 +54,17 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Rotas API
-app.use('/api/produtos', (await import('./routes/products.js')).default);
-app.use('/api/users', (await import('./routes/users.js')).default);
-app.use('/api/downloads', (await import('./routes/downloads.js')).default);
-app.use('/api/carrinho', (await import('./routes/carrinho.js')).default);
-app.use('/api/wishlist', (await import('./routes/wishlist.js')).default);
+const produtosRouter = require('./routes/products');
+const usersRouter = require('./routes/users');
+const downloadsRouter = require('./routes/downloads');
+const carrinhoRouter = require('./routes/carrinho');
+const wishlistRouter = require('./routes/wishlist');
+
+app.use('/api/produtos', produtosRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/downloads', downloadsRouter);
+app.use('/api/carrinho', carrinhoRouter);
+app.use('/api/wishlist', wishlistRouter);
 
 // Rotas estáticas
 app.use('/downloads', express.static(path.join(__dirname, 'public/downloads')));
