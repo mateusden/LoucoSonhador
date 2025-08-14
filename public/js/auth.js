@@ -95,7 +95,7 @@ if (loginForm) {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '../index.html';
+        window.location.href = '/';
       } else {
         error.textContent = data.error || 'Erro ao fazer login';
       }
@@ -150,15 +150,15 @@ async function updateMenuUser() {
       const userType = user.type === 'vendedor' ? 'Vendedor' : 'Cliente';
       function resolveImgPath(img) {
         const isPublicPage = window.location.pathname.includes('/public/');
-        if (!img) return isPublicPage ? '../assets/img/image-svgrepo-com.png' : './assets/img/image-svgrepo-com.png';
+        if (!img) return isPublicPage ? '/assets/img/image-svgrepo-com.png' : '/assets/img/image-svgrepo-com.png';
         if (img.startsWith('http')) return img;
         if (img.startsWith('/')) return img;
-        if (img.startsWith('./') || img.startsWith('../')) return img;
-        return isPublicPage ? `../assets/img/${img}` : `./assets/img/${img}`;
+        if (img.startsWith('/') || img.startsWith('/')) return img;
+        return isPublicPage ? `/assets/img/${img}` : `/assets/img/${img}`;
       }
       function resolvePublicLink(path) {
         const isPublicPage = window.location.pathname.includes('/public/');
-        return isPublicPage ? `./${path}` : `./public/${path}`;
+        return isPublicPage ? `/${path}` : `/public/${path}`;
       }
       let menuHtml = '';
       if (user.type === 'cliente') {
@@ -216,7 +216,7 @@ async function updateMenuUser() {
         transform: translateY(-50%);
       `;
       const isPublicPage = window.location.pathname.includes('/public/');
-      const loginHref = isPublicPage ? './login.html' : './public/login.html';
+      const loginHref = isPublicPage ? '/login.html' : '/login.html';
       loginDiv.innerHTML = `<a href="${loginHref}">Login</a>`;
       header.style.position = 'relative';
       header.appendChild(loginDiv);
