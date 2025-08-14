@@ -233,13 +233,13 @@ function addSellerNavLinks() {
     const li = document.createElement('li');
     li.id = 'sellerMenuLinks';
     li.innerHTML = `
-      <a href="./public/vendas/dashboard.html" class="seller">Área do Vendedor</a>
+      <a href="/public/vendas/dashboard.html" class="seller">Área do Vendedor</a>
       <ul class="seller-submenu">
-        <li><a href="./public/vendas/dashboard.html">Dashboard</a></li>
-        <li><a href="./public/vendas/produtos.html">Produtos</a></li>
-        <li><a href="./public/vendas/relatorios.html">Relatórios</a></li>
-        <li><a href="./public/vendas/ferramentas.html">Ferramentas</a></li>
-        <li><a href="./public/vendas/financeiro.html">Financeiro</a></li>
+        <li><a href="/public/vendas/dashboard.html">Dashboard</a></li>
+        <li><a href="/public/vendas/produtos.html">Produtos</a></li>
+        <li><a href="/public/vendas/relatorios.html">Relatórios</a></li>
+        <li><a href="/public/vendas/ferramentas.html">Ferramentas</a></li>
+        <li><a href="/public/vendas/financeiro.html">Financeiro</a></li>
       </ul>
     `;
     li.onmouseenter = () => li.querySelector('ul').style.display = 'block';
