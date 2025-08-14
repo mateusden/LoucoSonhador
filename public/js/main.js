@@ -90,21 +90,24 @@ function renderizarProdutosFiltrados() {
     switch(orderBy) {
       case 'name-asc': return (a.nome || '').localeCompare(b.nome || '', 'pt-BR');
       case 'name-desc': return (b.nome || '').localeCompare(a.nome || '', 'pt-BR');
-      case 'price-asc': return (a.preco||0)-(b.preco||0);
-      case 'price-desc': return (b.preco||0)-(a.preco||0);
+      case 'price-asc': return (parseFloat(a.preco)||0)-(parseFloat(b.preco)||0);
+      case 'price-desc': return (parseFloat(b.preco)||0)-(parseFloat(a.preco)||0);
       default: return 0;
     }
   });
 
   container.innerHTML = '';
   filtrados.forEach(p => {
+    // Converte preço para número
+    const preco = parseFloat(p.preco) || 0;
+    
     const div = document.createElement('div');
     div.className = 'product-1';
     div.setAttribute('data-category', p.categoria || '');
     div.innerHTML = `
       <img class="product-img" src="${resolveImgPath(p.imagem)}" alt="">
       <h2>${p.nome}</h2>
-      <h2>R$ ${(p.preco||0).toFixed(2).replace('.',',')}</h2>
+      <h2>R$ ${preco.toFixed(2).replace('.',',')}</h2>
       <div class="product-actions">
         <button><a class="download-preview" href="${getCompraHref(p.id)}">Comprar</a></button>
         <button><a class="details" href="${getDetalhesHref(p.id)}">Ver detalhes</a></button>
