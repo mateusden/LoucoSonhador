@@ -3,13 +3,16 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const { Pool } = require('pg')
+const { Pool } = require('pg');
+
 const app = express();
 
-// Pool PostgreSQL (IPv4 + SSL)
+// Pool PostgreSQL - Use APENAS connectionString OU configuração manual
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: false
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 // Versão mais limpa
