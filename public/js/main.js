@@ -71,7 +71,10 @@ function filtrarEOrdenarProdutos() {
 // Renderizar produtos filtrados a partir do fetch
 function renderizarProdutosFiltrados() {
   const container = document.getElementById('produtos');
-  if (!container) return container.innerHTML = '';
+  if (!container) {
+    console.warn('❌ Container #produtos não encontrado');
+    return; // Só return, sem tentar acessar .innerHTML
+  }
   
   const categoriaSelecionada = select?.value || 'todas';
   const termoBusca = searchInput?.value.toLowerCase() || '';
@@ -130,7 +133,11 @@ window.addEventListener('DOMContentLoaded', () => {
   // Fetch produtos
   fetch('/api/produtos')
     .then(res => res.json())
-    .then(produtos => { produtosGlobais = produtos; renderizarProdutosFiltrados(); })
+    .then(produtos => { 
+      produtosGlobais = produtos; 
+      console.log('✅ Produtos carregados:', produtos.length);
+      renderizarProdutosFiltrados(); 
+    })
     .catch(err => console.error('Erro fetch produtos:', err));
 
   // Fetch downloads
@@ -138,7 +145,10 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(res=>res.json())
     .then(downloads=>{
       const container = document.getElementById('downloads');
-      if(!container) return;
+      if(!container) {
+        console.warn('❌ Container #downloads não encontrado');
+        return;
+      }
       container.innerHTML = '';
       downloads.forEach(d=>{
         const isImage = /\.(jpg|jpeg|png|gif)$/i.test(d.arquivo);
