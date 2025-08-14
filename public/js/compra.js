@@ -1,7 +1,7 @@
 // Verificação de login antes de permitir acesso à página de compra
 async function verificarLogin() {
   try {
-    const response = await fetch('http://192.168.0.89:3001/api/users/check-auth', {
+    const response = await fetch('/api/users/check-auth', {
       credentials: 'include'
     });
     
@@ -93,4 +93,4 @@ document.addEventListener('DOMContentLoaded', async function() {
       produtoValor.textContent = `💰 Valor: R$ ${produto.preco.toFixed(2)}`;
     }
   }
-}); 
+});

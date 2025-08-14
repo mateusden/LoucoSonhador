@@ -1,26 +1,24 @@
-// app.js
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const { Pool } = require('pg');
-
+const { Pool } = require('pg')
 const app = express();
 
-// Pool PostgreSQL
+// Pool PostgreSQL (IPv4 + SSL)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false } // obrigatório Supabase
+  ssl: false
 });
 
-// Testa a conexão
+// Versão mais limpa
 async function testConnection() {
   try {
-    const res = await pool.query('SELECT NOW()');
-    console.log('Banco conectado! Hora:', res.rows[0].now);
+    await pool.query('SELECT 1');
+    console.log('✅ Database connected');
   } catch (err) {
-    console.error('Erro na conexão:', err);
+    console.error('❌ Database connection failed:', err.message);
   }
 }
 testConnection();
@@ -79,5 +77,5 @@ app.get('/', (req, res) => {
 // Porta dinâmica
 const port = process.env.PORT || 3001;
 app.listen(port, '0.0.0.0', () => {
-  console.log(`Servidor rodando na porta ${port}`);
+  console.log(`🚀 Servidor rodando na porta ${port}`);
 });

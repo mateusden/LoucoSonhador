@@ -1,32 +1,21 @@
-// detalhes.js
-
 // Função para adicionar ao carrinho via backend
 function adicionarAoCarrinho(productId) {
-  fetch('http://192.168.0.89:3001/api/carrinho', {
+  fetch('/api/carrinho', {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ product_id: productId, quantidade: 1 })
   })
   .then(res => {
-    if (res.status === 401) {
-      throw new Error('Não autorizado - Faça login primeiro');
-    }
-    if (res.status === 403) {
-      throw new Error('Sessão expirada - Faça login novamente');
-    }
-    if (!res.ok) {
-      throw new Error('Erro no servidor');
-    }
+    if (res.status === 401) throw new Error('Não autorizado - Faça login primeiro');
+    if (res.status === 403) throw new Error('Sessão expirada - Faça login novamente');
+    if (!res.ok) throw new Error('Erro no servidor');
     return res.json();
   })
   .then(data => {
     if (data.success) {
       alert('Produto adicionado ao carrinho!');
-      // Atualizar contadores usando a função global
-      if (typeof window.atualizarContadores === 'function') {
-        window.atualizarContadores();
-      }
+      if (typeof window.atualizarContadores === 'function') window.atualizarContadores();
     } else {
       alert('Erro ao adicionar ao carrinho.');
     }
@@ -43,31 +32,22 @@ function adicionarAoCarrinho(productId) {
 
 // Função para adicionar à wishlist via backend
 function adicionarWishlist(productId) {
-  fetch('http://192.168.0.89:3001/api/wishlist', {
+  fetch('/api/wishlist', {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ product_id: productId })
   })
   .then(res => {
-    if (res.status === 401) {
-      throw new Error('Não autorizado - Faça login primeiro');
-    }
-    if (res.status === 403) {
-      throw new Error('Sessão expirada - Faça login novamente');
-    }
-    if (!res.ok) {
-      throw new Error('Erro no servidor');
-    }
+    if (res.status === 401) throw new Error('Não autorizado - Faça login primeiro');
+    if (res.status === 403) throw new Error('Sessão expirada - Faça login novamente');
+    if (!res.ok) throw new Error('Erro no servidor');
     return res.json();
   })
   .then(data => {
     if (data.success) {
       alert('Produto adicionado à wishlist!');
-      // Atualizar contadores usando a função global
-      if (typeof window.atualizarContadores === 'function') {
-        window.atualizarContadores();
-      }
+      if (typeof window.atualizarContadores === 'function') window.atualizarContadores();
     } else {
       alert('Erro ao adicionar à wishlist.');
     }
@@ -111,21 +91,14 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
     `;
-    document.getElementById('btnAddCarrinho').onclick = function() {
-      adicionarAoCarrinho(produto.id);
-    };
-    document.getElementById('btnAddWishlist').onclick = function() {
-      adicionarWishlist(produto.id);
-    };
+    document.getElementById('btnAddCarrinho').onclick = () => adicionarAoCarrinho(produto.id);
+    document.getElementById('btnAddWishlist').onclick = () => adicionarWishlist(produto.id);
   }
 
   // Função para renderizar download
   function renderizarDownload(download) {
-    // Verifica se o arquivo é imagem
     const isImage = /\.(jpg|jpeg|png|gif)$/i.test(download.arquivo);
-    const imgSrc = isImage
-      ? `http://192.168.0.89:3001/downloads/${download.arquivo}`
-      : '../assets/img/icone-download.png';
+    const imgSrc = isImage ? `/downloads/${download.arquivo}` : '../assets/img/icone-download.png';
 
     detalheContainer.innerHTML = `
       <div class="detalhe-container">
@@ -137,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="detalhe-info">
             <h2>${download.nome}</h2>
             <p>${download.descricao || ''}</p>
-            <a href="http://192.168.0.89:3001/api/downloads/file/${download.arquivo}" class="download-btn" download>Baixar arquivo</a>
+            <a href="/api/downloads/file/${download.arquivo}" class="download-btn" download>Baixar arquivo</a>
           </div>
         </div>
       </div>
@@ -145,11 +118,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Primeiro tenta buscar como produto
-  fetch(`http://192.168.0.89:3001/api/produtos/${id}`)
+  fetch(`/api/produtos/${id}`)
     .then(res => {
       if (res.ok) return res.json();
       // Se não achou produto, tenta como download
-      return fetch(`http://192.168.0.89:3001/api/downloads/${id}`)
+      return fetch(`/api/downloads/${id}`)
         .then(res2 => {
           if (res2.ok) return res2.json();
           throw new Error('Produto ou download não encontrado');
@@ -157,11 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(download => ({ tipo: 'download', data: download }));
     })
     .then(data => {
-      if (data.tipo === 'download') {
-        renderizarDownload(data.data);
-      } else {
-        renderizarProduto(data);
-      }
+      if (data.tipo === 'download') renderizarDownload(data.data);
+      else renderizarProduto(data);
     })
     .catch(() => {
       detalheContainer.innerHTML = "<p class='detalhe-erro'>Produto ou download não encontrado.</p>";

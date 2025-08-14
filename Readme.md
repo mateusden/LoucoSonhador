@@ -43,7 +43,7 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 - **Backend:** Node.js
 - **Banco de Dados:** PostgreSQL e Insomnia
 - **Pagamentos:** Mercado Pago
-- **Deploy:** Render e Supabase
+- **Deploy:** Render e Neon
 
 ## 📁 Estrutura do Projeto
 
