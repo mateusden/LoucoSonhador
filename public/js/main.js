@@ -8,14 +8,14 @@ let produtosGlobais = [];
 
 // Função para ajustar caminho da imagem
 function resolveImgPath(img) {
-  if (!img) return './assets/img/image-svgrepo-com.svg';
-  if (img.startsWith('http') || img.startsWith('/') || img.startsWith('./') || img.startsWith('../')) return img;
-  return `./assets/img/${img}`;
+  if (!img) return '/assets/img/image-svgrepo-com.svg';
+  if (img.startsWith('http') || img.startsWith('/') || img.startsWith('/') || img.startsWith('/')) return img;
+  return `/assets/img/${img}`;
 }
 
 // Função utilitária para montar link de compra/detalhes
-function getCompraHref(produtoId) { return `./compra.html?id=${produtoId}`; }
-function getDetalhesHref(produtoId) { return `./detalhes.html?id=${produtoId}`; }
+function getCompraHref(produtoId) { return `/compra.html?id=${produtoId}`; }
+function getDetalhesHref(produtoId) { return `/detalhes.html?id=${produtoId}`; }
 
 // Extrair preço do texto
 function extractPrice(priceText) {
@@ -155,9 +155,9 @@ window.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = '';
       downloads.forEach(d=>{
         const isImage = /\.(jpg|jpeg|png|gif)$/i.test(d.arquivo);
-        const imgSrc = isImage ? `/downloads/${d.arquivo}` : './assets/img/icone-download.png';
+        const imgSrc = isImage ? `/downloads/${d.arquivo}` : '/assets/img/icone-download.png';
         const downloadLink = `/api/downloads/file/${d.arquivo}`;
-        const detalhesLink = `./detalhes.html?id=${d.id}`;
+        const detalhesLink = `/detalhes.html?id=${d.id}`;
         const div = document.createElement('div');
         div.className='product-1';
         div.setAttribute('data-category','wallpaper');
