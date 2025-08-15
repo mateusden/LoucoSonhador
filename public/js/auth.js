@@ -2,18 +2,8 @@
 
 // Usuários pré-cadastrados
 const PREDEFINED_USERS = [
-  {
-    name: 'Mateus De Nadai',
-    email: 'produtos.loucosonhador@gmail.com',
-    password: 'pacoquita123',
-    type: 'vendedor'
-  },
-  {
-    name: 'Mateus Bordinassi',
-    email: 'mateusbnadai@gmail.com',
-    password: 'pacoquita123',
-    type: 'cliente'
-  }
+  { name: 'Mateus De Nadai', email: 'produtos.loucosonhador@gmail.com', password: 'pacoquita123', type: 'vendedor' },
+  { name: 'Mateus Bordinassi', email: 'mateusbnadai@gmail.com', password: 'pacoquita123', type: 'cliente' }
 ];
 
 function getUsers() {
@@ -39,10 +29,7 @@ function getLoggedUser() {
 
 async function logoutUser() {
   try {
-    await fetch('/api/users/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
+    await fetch('/api/users/logout', { method: 'POST', credentials: 'include' });
   } catch (err) {}
   window.location.reload();
 }
@@ -107,9 +94,7 @@ if (loginForm) {
 
 async function fetchLoggedUser() {
   try {
-    const response = await fetch('/api/users/perfil', {
-      credentials: 'include'
-    });
+    const response = await fetch('/api/users/perfil', { credentials: 'include' });
     if (response.ok) {
       const data = await response.json();
       return data.user;
@@ -121,127 +106,83 @@ async function fetchLoggedUser() {
 async function updateMenuUser() {
   const user = await fetchLoggedUser();
   const header = document.querySelector('header');
-  if (header) {
-    let existingUserDiv = document.getElementById('userMenuDiv');
-    let existingLoginDiv = document.getElementById('loginMenuDiv');
-    if (existingUserDiv) existingUserDiv.remove();
-    if (existingLoginDiv) existingLoginDiv.remove();
+  if (!header) return;
 
-    if (user) {
-      const userDiv = document.createElement('div');
-      userDiv.id = 'userMenuDiv';
-      userDiv.style.cssText = `
-        position: absolute;
-        right: 30px;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 1000;
-      `;
+  const existingUserDiv = document.getElementById('userMenuDiv');
+  const existingLoginDiv = document.getElementById('loginMenuDiv');
+  if (existingUserDiv) existingUserDiv.remove();
+  if (existingLoginDiv) existingLoginDiv.remove();
 
-      const userName = (user.nome || user.name || 'Usuário').split(' ')[0];
-      const userType = user.type === 'vendedor' ? 'Vendedor' : 'Cliente';
+  if (user) {
+    const userDiv = document.createElement('div');
+    userDiv.id = 'userMenuDiv';
+    userDiv.style.cssText = 'position:absolute; right:30px; top:50%; transform:translateY(-50%); z-index:1000;';
 
-      function resolveImgPath(img) {
-        const isPublicPage = window.location.pathname.includes('/public/');
-        if (!img) return isPublicPage ? '/assets/img/image-svgrepo-com.png' : '/assets/img/image-svgrepo-com.png';
-        if (img.startsWith('http')) return img;
-        if (img.startsWith('/')) return img;
-        return isPublicPage ? `/assets/img/${img}` : `/assets/img/${img}`;
-      }
+    const userName = (user.nome || user.name || 'Usuário').split(' ')[0];
+    const userType = user.type === 'vendedor' ? 'Vendedor' : 'Cliente';
 
-      function resolvePublicLink(path) {
-        const isPublicPage = window.location.pathname.includes('/public/');
-        return isPublicPage ? `/${path}` : `/public/${path}`;
-      }
+    const menuHtml = user.type === 'cliente'
+      ? `
+        <li><a href="/cliente.html#dashboard-cliente">Resumo</a></li>
+        <li><a href="/cliente.html#produtos">Produtos Comprados</a></li>
+        <li><a href="/cliente.html#conta">Informações da Conta</a></li>
+      `
+      : `<li><a href="/cliente.html#conta">Informações da Conta</a></li>`;
 
-      let menuHtml = '';
-      if (user.type === 'cliente') {
-        menuHtml = `
-          <li><a href="${resolvePublicLink('cliente.html#dashboard-cliente')}">Resumo</a></li>
-          <li><a href="${resolvePublicLink('cliente.html#produtos')}">Produtos Comprados</a></li>
-          <li><a href="${resolvePublicLink('cliente.html#conta')}">Informações da Conta</a></li>
-        `;
-      } else {
-        menuHtml = `
-          <li><a href="${resolvePublicLink('cliente.html#conta')}">Informações da Conta</a></li>
-        `;
-      }
+    userDiv.innerHTML = `
+      <div class="user-dropdown" style="display:flex; align-items:center; gap:8px; position:relative;">
+        <button id="userDropdownToggle" style="all:unset; display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <img src="/assets/img/person-circle-svgrepo-com.png" alt="Perfil" 
+               style="width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0;">
+          <span style="font-family:'Source Sans 3', sans-serif; font-weight:600; white-space:nowrap;">
+            Olá, ${userName} <span style="font-weight:500; color:#63b3ed; margin-left:6px; font-size:0.9em;">(${userType})</span> ▼
+          </span>
+        </button>
+        <ul id="userDropdownMenu" style="display:none; position:absolute; right:0; top:calc(100% + 8px); background:#fff; list-style:none; padding:8px; margin:0; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12); z-index:1001;">
+          ${menuHtml}
+          <li><a href="#" id="logoutBtn">Sair</a></li>
+        </ul>
+      </div>
+    `;
 
-      // Avatar e menu ajustados
-      userDiv.innerHTML = `
-        <div class="user-dropdown" style="display:flex; align-items:center; gap:8px; position:relative;">
-          <button id="userDropdownToggle" style="all:unset; display:flex; align-items:center; gap:8px; cursor:pointer;">
-            <img src="${resolveImgPath('person-circle-svgrepo-com.png')}" alt="Perfil" 
-                 style="width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0;">
-            <span style="font-family:'Source Sans 3', sans-serif; font-weight:600; white-space:nowrap;">
-              Olá, ${userName} <span style="font-weight:500; color:#63b3ed; margin-left:6px; font-size:0.9em;">(${userType})</span> ▼
-            </span>
-          </button>
-          <ul id="userDropdownMenu" style="display:none; position:absolute; right:0; top:calc(100% + 8px); background:#fff; list-style:none; padding:8px; margin:0; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12); z-index:1001;">
-            ${menuHtml}
-            <li><a href="#" id="logoutBtn">Sair</a></li>
-          </ul>
-        </div>
-      `;
+    header.style.position = 'relative';
+    header.appendChild(userDiv);
 
-      header.style.position = 'relative';
-      header.appendChild(userDiv);
-
-      const toggle = document.getElementById('userDropdownToggle');
-      const menu = document.getElementById('userDropdownMenu');
-      if (toggle && menu) {
-        toggle.addEventListener('click', function(e) {
-          e.stopPropagation();
-          menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        });
-        document.addEventListener('click', function(e) {
-          if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-            menu.style.display = 'none';
-          }
-        });
-      }
-
-      const logoutBtn = document.getElementById('logoutBtn');
-      if (logoutBtn) {
-        logoutBtn.onclick = function(e) { 
-          e.preventDefault(); 
-          logoutUser(); 
-        };
-      }
-    } else {
-      const loginDiv = document.createElement('div');
-      loginDiv.id = 'loginMenuDiv';
-      loginDiv.style.cssText = `
-        position: absolute;
-        right: 30px;
-        top: 50%;
-        transform: translateY(-50%);
-      `;
-      const isPublicPage = window.location.pathname.includes('/public/');
-      const loginHref = isPublicPage ? '/login.html' : '/login.html';
-      loginDiv.innerHTML = `<a href="${loginHref}">Login</a>`;
-      header.style.position = 'relative';
-      header.appendChild(loginDiv);
+    const toggle = document.getElementById('userDropdownToggle');
+    const menu = document.getElementById('userDropdownMenu');
+    if (toggle && menu) {
+      toggle.addEventListener('click', e => { e.stopPropagation(); menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; });
+      document.addEventListener('click', e => { if (!toggle.contains(e.target) && !menu.contains(e.target)) menu.style.display = 'none'; });
     }
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) logoutBtn.onclick = e => { e.preventDefault(); logoutUser(); };
+
+  } else {
+    const loginDiv = document.createElement('div');
+    loginDiv.id = 'loginMenuDiv';
+    loginDiv.style.cssText = 'position:absolute; right:30px; top:50%; transform:translateY(-50%);';
+    loginDiv.innerHTML = `<a href="/login.html">Login</a>`;
+    header.style.position = 'relative';
+    header.appendChild(loginDiv);
   }
 }
 
 function addSellerNavLinks() {
   const user = getLoggedUser();
   const nav = document.querySelector('nav .menu');
-  if (!nav) return;
-  if (document.getElementById('sellerMenuLinks')) return;
+  if (!nav || document.getElementById('sellerMenuLinks')) return;
   if (user && user.type === 'vendedor') {
     const li = document.createElement('li');
     li.id = 'sellerMenuLinks';
     li.innerHTML = `
-      <a href="/public/vendas/dashboard.html" class="seller">Área do Vendedor</a>
+      <a href="/vendas/dashboard.html" class="seller">Área do Vendedor</a>
       <ul class="seller-submenu">
-        <li><a href="/public/vendas/dashboard.html">Dashboard</a></li>
-        <li><a href="/public/vendas/produtos.html">Produtos</a></li>
-        <li><a href="/public/vendas/relatorios.html">Relatórios</a></li>
-        <li><a href="/public/vendas/ferramentas.html">Ferramentas</a></li>
-        <li><a href="/public/vendas/financeiro.html">Financeiro</a></li>
+        <li><a href="/vendas/dashboard.html">Dashboard</a></li>
+        <li><a href="/vendas/produtos.html">Produtos</a></li>
+        <li><a href="/vendas/relatorios.html">Relatórios</a></li>
+        <li><a href="/vendas/ferramentas.html">Ferramentas</a></li>
+        <li><a href="/vendas/financeiro.html">Financeiro</a></li>
       </ul>
     `;
     li.onmouseenter = () => li.querySelector('ul').style.display = 'block';
@@ -252,9 +193,7 @@ function addSellerNavLinks() {
 
 async function testarAutenticacao() {
   try {
-    const response = await fetch('/api/users/check-auth', {
-      credentials: 'include'
-    });
+    const response = await fetch('/api/users/check-auth', { credentials: 'include' });
     if (response.ok) {
       const data = await response.json();
       console.log('✅ Usuário autenticado:', data);
