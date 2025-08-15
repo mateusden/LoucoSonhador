@@ -126,6 +126,7 @@ async function updateMenuUser() {
     let existingLoginDiv = document.getElementById('loginMenuDiv');
     if (existingUserDiv) existingUserDiv.remove();
     if (existingLoginDiv) existingLoginDiv.remove();
+
     if (user) {
       const userDiv = document.createElement('div');
       userDiv.id = 'userMenuDiv';
@@ -134,32 +135,25 @@ async function updateMenuUser() {
         right: 30px;
         top: 50%;
         transform: translateY(-50%);
-        color: #63b3ed;
-        font-family: 'Source Sans 3', sans-serif;
-        font-size: 18px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: nowrap;
-        white-space: nowrap;
-        text-align: right;
         z-index: 1000;
       `;
+
       const userName = (user.nome || user.name || 'Usuário').split(' ')[0];
       const userType = user.type === 'vendedor' ? 'Vendedor' : 'Cliente';
+
       function resolveImgPath(img) {
         const isPublicPage = window.location.pathname.includes('/public/');
         if (!img) return isPublicPage ? '/assets/img/image-svgrepo-com.png' : '/assets/img/image-svgrepo-com.png';
         if (img.startsWith('http')) return img;
         if (img.startsWith('/')) return img;
-        if (img.startsWith('/') || img.startsWith('/')) return img;
         return isPublicPage ? `/assets/img/${img}` : `/assets/img/${img}`;
       }
+
       function resolvePublicLink(path) {
         const isPublicPage = window.location.pathname.includes('/public/');
         return isPublicPage ? `/${path}` : `/public/${path}`;
       }
+
       let menuHtml = '';
       if (user.type === 'cliente') {
         menuHtml = `
@@ -172,20 +166,27 @@ async function updateMenuUser() {
           <li><a href="${resolvePublicLink('cliente.html#conta')}">Informações da Conta</a></li>
         `;
       }
+
+      // Avatar e menu ajustados
       userDiv.innerHTML = `
-        <div class="user-dropdown">
-          <span id="userDropdownToggle">
-            <img src="${resolveImgPath('person-circle-svgrepo-com.png')}" alt="Perfil">
-            Olá, ${userName} <span>(${userType})</span> ▼
-          </span>
-          <ul id="userDropdownMenu" style="display:none;">
+        <div class="user-dropdown" style="display:flex; align-items:center; gap:8px; position:relative;">
+          <button id="userDropdownToggle" style="all:unset; display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <img src="${resolveImgPath('person-circle-svgrepo-com.png')}" alt="Perfil" 
+                 style="width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0;">
+            <span style="font-family:'Source Sans 3', sans-serif; font-weight:600; white-space:nowrap;">
+              Olá, ${userName} <span style="font-weight:500; color:#63b3ed; margin-left:6px; font-size:0.9em;">(${userType})</span> ▼
+            </span>
+          </button>
+          <ul id="userDropdownMenu" style="display:none; position:absolute; right:0; top:calc(100% + 8px); background:#fff; list-style:none; padding:8px; margin:0; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12); z-index:1001;">
             ${menuHtml}
             <li><a href="#" id="logoutBtn">Sair</a></li>
           </ul>
         </div>
       `;
+
       header.style.position = 'relative';
       header.appendChild(userDiv);
+
       const toggle = document.getElementById('userDropdownToggle');
       const menu = document.getElementById('userDropdownMenu');
       if (toggle && menu) {
@@ -199,6 +200,7 @@ async function updateMenuUser() {
           }
         });
       }
+
       const logoutBtn = document.getElementById('logoutBtn');
       if (logoutBtn) {
         logoutBtn.onclick = function(e) { 
