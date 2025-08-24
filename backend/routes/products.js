@@ -16,19 +16,19 @@ router.get('/', async (req, res) => {
 
 // Cadastrar novo produto (com id alfanumérico)
 router.post('/', async (req, res) => {
-    const { id, nome, preco, imagem, descricao, destaque } = req.body;
-    try {
-      const client = await pool.connect();
-      const result = await client.query(
-        'INSERT INTO produtos (id, nome, preco, imagem, descricao, destaque) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-        [id, nome, preco, imagem, descricao, destaque]
-      );
-      client.release();
-      res.status(201).json(result.rows[0]);
-    } catch (err) {
-      console.error('Erro ao cadastrar produto:', err);
-      res.status(400).json({ error: 'Erro ao cadastrar produto' });
-    }
+  const { id, nome, preco, imagem, descricao, destaque, arquivo, categoria } = req.body;
+  try {
+    const client = await pool.connect();
+    const result = await client.query(
+      'INSERT INTO produtos (id, nome, preco, imagem, descricao, destaque, arquivo, categoria) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [id, nome, preco, imagem, descricao, destaque, arquivo, categoria]
+    );
+    client.release();
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao cadastrar produto:', err);
+    res.status(400).json({ error: 'Erro ao cadastrar produto' });
+  }
 });
 
 // Atualizar produto existente
