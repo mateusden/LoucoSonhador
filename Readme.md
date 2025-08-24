@@ -142,8 +142,8 @@ O site está hospedado no :
 ## 📞 Contato
 
 - **Desenvolvedor:** Mateus De Nadai
-- **GitHub:** [@1GuriBot](https://github.com/mateusden)
-- **Instagram:** [@1nerdola38](https://instagram.com/1.nerdola)
+- **GitHub:** [@mateusden](https://github.com/mateusden)
+- **Instagram:** [@1.nerdola](https://instagram.com/1.nerdola)
 
 ## 📄 Licença
 
