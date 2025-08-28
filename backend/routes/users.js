@@ -305,7 +305,7 @@ router.delete('/remover-compra', async (req, res) => {
 });
 
 // Endpoint para solicitar reset (Node.js/Express exemplo)
-app.post('/api/forgot-password', async (req, res) => {
+router.post('/api/forgot-password', async (req, res) => {
   const { email } = req.body;
   
   // Verificar se email existe no banco
@@ -346,7 +346,7 @@ app.post('/api/forgot-password', async (req, res) => {
 });
 
 // Endpoint para redefinir senha
-app.post('/api/reset-password', async (req, res) => {
+router.post('/api/reset-password', async (req, res) => {
   const { token, novaSenha } = req.body;
   
   // Buscar usuário pelo token válido
