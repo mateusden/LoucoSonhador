@@ -133,7 +133,7 @@ async function updateMenuUser() {
       <div class="user-dropdown" style="display:flex; align-items:center; gap:8px; position:relative;">
         <button id="userDropdownToggle" style="all:unset; display:flex; align-items:center; gap:8px; cursor:pointer;">
           <img src="/assets/img/person-circle-svgrepo-com.png" alt="Perfil" 
-               style="width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0;">
+               style="width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0; filter: brightness(0) saturate(100%) invert(69%) sepia(36%) saturate(1336%) hue-rotate(184deg) brightness(98%) contrast(93%);">
           <span style="font-family:'Source Sans 3', sans-serif; font-weight:600; white-space:nowrap;">
             Olá, ${userName} <span style="font-weight:500; color:#63b3ed; margin-left:6px; font-size:0.9em;">(${userType})</span> ▼
           </span>

@@ -14,18 +14,22 @@ router.post('/register', async (req, res) => {
   try {
     const hash = await bcrypt.hash(senha, 10);
     const client = await pool.connect();
-    const result = await client.query(
-      'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3) RETURNING *',
-      [nome, email, hash]
-    );
-    client.release();
     
-    const novoUsuario = result.rows[0];
-    res.status(201).json({ 
-      id: novoUsuario.id, 
-      nome: novoUsuario.nome, 
-      email: novoUsuario.email 
-    });
+    try {
+      const result = await client.query(
+        'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3) RETURNING *',
+        [nome, email, hash]
+      );
+      
+      const novoUsuario = result.rows[0];
+      res.status(201).json({ 
+        id: novoUsuario.id, 
+        nome: novoUsuario.nome, 
+        email: novoUsuario.email 
+      });
+    } finally {
+      client.release(); // Sempre executa
+    }
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err);
     res.status(400).json({ error: 'Erro ao cadastrar usuário' });
@@ -35,11 +39,11 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   const { email, senha } = req.body;
+  let client;
   
   try {
-    const client = await pool.connect();
+    client = await pool.connect();
     const result = await client.query('SELECT * FROM usuarios WHERE email = $1', [email]);
-    client.release();
     
     if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Usuário não encontrado' });
@@ -52,21 +56,19 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Senha incorreta' });
     }
 
-    // Gera o token
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email }, 
       SECRET, 
       { expiresIn: '1h' }
     );
 
-    // Envia o token em cookie httpOnly
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false, // true se usar HTTPS
+      secure: false,
       sameSite: 'lax',
-      maxAge: 60 * 60 * 1000, // 1 hora
-      domain: undefined, // Permite cookies em subdomínios
-      path: '/' // Cookie disponível em todo o site
+      maxAge: 60 * 60 * 1000,
+      domain: undefined,
+      path: '/'
     });
     
     res.json({ 
@@ -77,9 +79,13 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     console.error('Erro ao fazer login:', err);
     res.status(500).json({ error: 'Erro interno do servidor' });
+  } finally {
+    // Garante que o client seja sempre liberado
+    if (client) {
+      client.release();
+    }
   }
 });
-
 // Perfil (rota protegida)
 router.get('/perfil', autenticarToken, async (req, res) => {
   try {
@@ -296,6 +302,80 @@ router.delete('/remover-compra', async (req, res) => {
     console.error('Erro ao remover compra:', err);
     res.status(500).json({ error: 'Erro ao remover compra' });
   }
+});
+
+// Endpoint para solicitar reset (Node.js/Express exemplo)
+app.post('/api/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  
+  // Verificar se email existe no banco
+  const user = await User.findOne({ email });
+  if (!user) {
+      return res.json({ success: false, message: 'Email não encontrado' });
+  }
+  
+  // Gerar token único
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  const resetTokenExpiry = Date.now() + 3600000; // 1 hora
+  
+  // Salvar token no banco
+  await User.updateOne(
+      { email },
+      { 
+          resetToken: resetToken,
+          resetTokenExpiry: resetTokenExpiry 
+      }
+  );
+  
+  // Enviar email com link
+  const resetLink = `https://loucosonhador.onrender.com/reset-password?token=${resetToken}`;
+  
+  // Usar serviço de email (Nodemailer, SendGrid, etc)
+  await enviarEmail({
+      to: email,
+      subject: 'Recuperação de Senha',
+      html: `
+          <h2>Recuperação de Senha</h2>
+          <p>Clique no link abaixo para redefinir sua senha:</p>
+          <a href="${resetLink}">Redefinir Senha</a>
+          <p>Este link expira em 1 hora.</p>
+      `
+  });
+  
+  res.json({ success: true, message: 'Email enviado com sucesso' });
+});
+
+// Endpoint para redefinir senha
+app.post('/api/reset-password', async (req, res) => {
+  const { token, novaSenha } = req.body;
+  
+  // Buscar usuário pelo token válido
+  const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpiry: { $gt: Date.now() } // Token não expirado
+  });
+  
+  if (!user) {
+      return res.json({ 
+          success: false, 
+          message: 'Token inválido ou expirado' 
+      });
+  }
+  
+  // Criptografar nova senha
+  const senhaCriptografada = await bcrypt.hash(novaSenha, 10);
+  
+  // Atualizar senha e limpar token
+  await User.updateOne(
+      { _id: user._id },
+      {
+          senha: senhaCriptografada,
+          resetToken: null,
+          resetTokenExpiry: null
+      }
+  );
+  
+  res.json({ success: true, message: 'Senha alterada com sucesso' });
 });
 
 module.exports = router;

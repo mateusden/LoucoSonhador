@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <nav class="detalhe-breadcrumb">Produtos &gt; ${produto.nome}</nav>
         <div class="detalhe-conteudo">
           <div class="detalhe-img" style="flex-direction:column;align-items:center;justify-content:center;">
-            <img src="../assets/img/${produto.imagem}" alt="${produto.nome}">
+            <img src="/assets/img/${produto.imagem}" alt="${produto.nome}">
           </div>
           <div class="detalhe-info">
             <h2>${produto.nome}</h2>
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Função para renderizar download
   function renderizarDownload(download) {
     const isImage = /\.(jpg|jpeg|png|gif)$/i.test(download.arquivo);
-    const imgSrc = isImage ? `/downloads/${download.arquivo}` : '../assets/img/icone-download.png';
+    const imgSrc = isImage ? `/downloads/${download.arquivo}` : '/assets/img/icone-download.png';
 
     detalheContainer.innerHTML = `
       <div class="detalhe-container">

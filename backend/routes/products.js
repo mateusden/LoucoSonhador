@@ -58,7 +58,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Listar produtos em destaque
-router.get('/destaque', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const client = await pool.connect();
         const result = await client.query('SELECT * FROM produtos WHERE destaque = $1', [true]);

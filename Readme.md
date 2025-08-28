@@ -23,7 +23,6 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 - [x] Catálogo de produtos (coleções e downloads)
 - [x] Sistema de autenticação básico
 - [x] Páginas de detalhes dos produtos
-- [x] Design responsivo para mobile
 - [x] Banco de dados de usuários
 - [x] Sistema de downloads automático
 
@@ -35,6 +34,7 @@ Este é um projeto pessoal em fase de construção. Funcionalidades podem estar 
 
 ### ❌ Não Implementado
 - [ ] Sistema de cupons
+- [] Design responsivo para mobile
 - [ ] Sistema de avaliações
 
 ## 🛠️ Tecnologias Utilizadas
@@ -103,6 +103,8 @@ louco-sonhador/
 │   │   └── wishlist.js
 │   ├── login.html               # Sistema de login
 │   ├── registro.html            # Cadastro de usuário
+│   ├── senha.html            # Pedir e-mail pra redefinir
+│   ├── senha2.html            # Redefinir senha
 │   ├── sobre.html               # Sobre o projeto
 │   ├── tutorial-wallpaper.html  # Tutorial de uso
 │   ├── vendas/                  # Área administrativa

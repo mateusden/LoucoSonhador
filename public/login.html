@@ -25,8 +25,7 @@
         <li><a class="tutorial" href="tutorial-wallpaper.html">Como usar</a></li>
         <li><a class="contact" href="contato.html">Contato</a></li>
         <li class="nav-wishlist nav-dropdown-hover" style="position:relative;">
-          <a href="/wishlist.html" id="wishlistNavLink"
-            style="text-decoration:none;color:#63b3ed; font-size: 20px;">
+          <a href="/wishlist.html" id="wishlistNavLink" style="text-decoration:none;color:#63b3ed; font-size: 20px;">
             Wishlist <span id="wishlistCount" style="font-weight:bold;">0</span>
           </a>
           <div id="wishlistDropdown" class="nav-dropdown"
@@ -38,8 +37,7 @@
           </div>
         </li>
         <li class="nav-cart nav-dropdown-hover" style="position:relative;">
-          <a href="/carrinho.html" id="cartNavLink"
-            style="text-decoration:none;color:#63b3ed; font-size: 20px;">
+          <a href="/carrinho.html" id="cartNavLink" style="text-decoration:none;color:#63b3ed; font-size: 20px;">
             Carrinho <span id="cartCount" style="font-weight:bold;">0</span>
           </a>
           <div id="cartDropdown" class="nav-dropdown"
@@ -61,24 +59,27 @@
           <input type="email" id="loginEmail" placeholder="Seu e-mail" required style="padding: 15px; font-size: 18px;">
           <input type="password" id="loginPassword" placeholder="Sua senha" required
             style="padding: 15px; font-size: 18px;">
+          <button class="g-recaptcha" data-sitekey="6Ld6MrUrAAAAAF_g1UQ9NIHIbynTyDoGk0GZp0rV" data-callback='onSubmit'
+            data-action='submit'>Submit</button>
           <button type="submit" style="padding: 15px; font-size: 18px; height: 60px; width: 592px;">Entrar</button>
           <span id="loginError"
             style="color:#c00; text-align:center; margin-top: 15px; display: block; font-size: 16px;"></span>
         </form>
         <div style="display: flex; flex-direction: column-reverse; justify-content: center; gap: -50px;" class="p">
           <p
-          style="text-align:center; margin-top:25px; color: #2d3748; font-size: 18px;font-family: 'Source Sans 3', sans-serif; margin-top: -30px;">
-          Não tem conta? <a href="./registro.html"
-            style="color: #1a365d; text-decoration: none; font-weight: 600; font-family: 'Source Sans 3', sans-serif; margin-top: -55px;">Registre-se</a>
-        </p>
-        <hr style="background-color: #1a365d; width: 400px;height: 1px; margin-bottom: 50px ;">
-        <p
-          style="text-align:center; margin-top:25px; color: #2d3748; font-size: 18px;font-family: 'Source Sans 3', sans-serif; margin-top: -30px;">
-           Esqueceu sua senha? <a href="./senha.html"
-            style="color: #1a365d; text-decoration: none; font-weight: 600; font-family: 'Source Sans 3', sans-serif;">Esqueci minha senha</a>
-        </p>
+            style="text-align:center; margin-top:25px; color: #2d3748; font-size: 18px;font-family: 'Source Sans 3', sans-serif; margin-top: -30px;">
+            Não tem conta? <a href="./registro.html"
+              style="color: #1a365d; text-decoration: none; font-weight: 600; font-family: 'Source Sans 3', sans-serif; margin-top: -55px;">Registre-se</a>
+          </p>
+          <hr style="background-color: #1a365d; width: 400px;height: 1px; margin-bottom: 50px ;">
+          <p
+            style="text-align:center; margin-top:25px; color: #2d3748; font-size: 18px;font-family: 'Source Sans 3', sans-serif; margin-top: -30px;">
+            Esqueceu sua senha? <a href="./senha.html"
+              style="color: #1a365d; text-decoration: none; font-weight: 600; font-family: 'Source Sans 3', sans-serif;">Esqueci
+              minha senha</a>
+          </p>
         </div>
-        
+
       </div>
     </div>
   </main>
@@ -99,6 +100,12 @@
   </footer>
   <script src="/js/auth.js"></script>
   <script src="/js/main.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+  <script>
+    function onSubmit(token) {
+      document.getElementById("demo-form").submit();
+    }
+  </script>
 </body>
 
 </html>

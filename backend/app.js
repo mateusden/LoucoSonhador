@@ -4,7 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const { Pool } = require('pg');
-
+const nodemailer = require('nodemailer');
 const app = express();
 
 // Pool PostgreSQL - Use APENAS connectionString OU configuração manual
@@ -81,4 +81,14 @@ app.get('/', (req, res) => {
 const port = process.env.PORT || 3001;
 app.listen(port, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando na porta ${port}`);
+});
+
+
+// Criar o transportador
+const transporter = nodemailer.createTransporter({
+    service: 'gmail', // ou 'outlook', 'yahoo', etc
+    auth: {
+        user: 'produtos.loucosonhador@gmail.com',
+        pass: 'suasenhaDeApp' // NÃO é a senha normal!
+    }
 });

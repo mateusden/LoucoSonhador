@@ -116,7 +116,7 @@ async function renderizarConta() {
   }
   dadosConta.innerHTML = `
     <div class="conta-info-container">
-      <img src="../assets/img/person-circle-svgrepo-com.png" alt="Foto do usuário" class="conta-foto">
+      <img src="/assets/img/person-circle-svgrepo-com.png" alt="Foto do usuário" class="conta-foto">
       <div class="conta-dados">
         <div class="conta-nome-email">
           <span class="conta-nome">${usuario.nome || usuario.name || ''}</span><br>
